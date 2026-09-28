@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'upcyclepage.dart';
+import 'HomePage.dart';
 
-class RecyclePage extends StatelessWidget {
-  const RecyclePage({super.key});
+class UpcyclePage extends StatelessWidget {
+  const UpcyclePage({super.key});
 
   // Menggunakan warna hijau utama Nest Food
   final Color _primaryGreen = const Color(0xFF38683A);
@@ -20,7 +20,7 @@ class RecyclePage extends StatelessWidget {
               const SizedBox(height: 60), // Jarak dari atas layar
               // 1. Judul Halaman (Title)
               Text(
-                'Recycle', // Typo diperbaiki dari "Recyle"
+                'Upcycle',
                 style: TextStyle(
                   fontFamily: 'ABeeZee',
                   fontSize: 36,
@@ -32,7 +32,7 @@ class RecyclePage extends StatelessWidget {
 
               // 2. Sub-judul / Deskripsi (Subtitle)
               Text(
-                'Kembalikan kemasan\nreusable setelah\ndigunakan agar dapat\ndigunakan kembali', // Typo diperbaiki
+                'Sisa makanan akan diolah\nkembali menjadi produk\nbernilai seperti kompos atau\nmenu baru yang lebih\nmenarik',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'ABeeZee',
@@ -43,26 +43,26 @@ class RecyclePage extends StatelessWidget {
                 ),
               ),
 
-              // 3. Gambar Trash / Recycle Bin
+              // 3. Gambar Food / Upcycle
               Expanded(
                 child: Center(
                   child: Image.asset(
-                    'Asset/Image/Trash.png',
+                    'Asset/Image/Food.png',
                     fit: BoxFit.contain,
                     height: 250,
                   ),
                 ),
               ),
 
-              // 4. Indikator Halaman (Dots) - Titik TENGAH yang aktif
+              // 4. Indikator Halaman (Dots) - Titik KETIGA yang aktif
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildDot(isActive: false), // Titik pertama kosong
                   const SizedBox(width: 8),
-                  _buildDot(isActive: true), // Titik kedua (Recycle) terisi
+                  _buildDot(isActive: false), // Titik kedua kosong
                   const SizedBox(width: 8),
-                  _buildDot(isActive: false), // Titik ketiga kosong
+                  _buildDot(isActive: true), // Titik ketiga (Upcycle) terisi
                 ],
               ),
               const SizedBox(height: 40),
@@ -70,12 +70,10 @@ class RecyclePage extends StatelessWidget {
               // 5. Tombol Selanjutnya
               ElevatedButton(
                 onPressed: () {
-                  // Navigasi ke halaman UpcyclePage
-                  Navigator.push(
+                  // Navigasi ke HomePage sudah diaktifkan di sini
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const UpcyclePage(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
