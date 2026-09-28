@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'RefusePage.dart'; // Pastikan file RefusePage.dart berada di folder yang sama (lib/)
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -137,8 +138,18 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 20),
+
+                // --- TOMBOL MASUK YANG SUDAH DITAMBAHKAN NAVIGASI ---
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    // Berpindah ke RefusePage dan menghapus halaman login dari riwayat (stack)
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RefusePage(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _primaryGreen,
                     foregroundColor: Colors.white,
@@ -153,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
+
                 const SizedBox(height: 25),
                 const Text(
                   'masuk dengan',
@@ -160,14 +172,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 15),
 
-                // --- TOMBOL GOOGLE YANG SUDAH DIPERBARUI ---
+                // --- TOMBOL GOOGLE ---
                 OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 55),
                     side: const BorderSide(
                       color: Color.fromARGB(255, 13, 92, 33),
-                    ), // Sesuai warna abu-abu di desain
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -177,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         'Asset/Image/Google.png',
-                        height: 24, // Sesuaikan tinggi gambar agar proporsional
+                        height: 24,
                         fit: BoxFit.contain,
                       ),
                     ],
@@ -185,14 +197,14 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 15),
 
-                // --- TOMBOL APPLE YANG SUDAH DIPERBARUI ---
+                // --- TOMBOL APPLE ---
                 OutlinedButton(
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 55),
                     side: const BorderSide(
                       color: Color.fromARGB(255, 20, 97, 30),
-                    ), // Disamakan abu-abu agar konsisten
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
@@ -202,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Image.asset(
                         'Asset/Image/Apple.png',
-                        height: 24, // Sesuaikan tinggi gambar agar proporsional
+                        height: 24,
                         fit: BoxFit.contain,
                       ),
                     ],
