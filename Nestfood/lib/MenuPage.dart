@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'CartPage.dart'; // Memastikan CartPage dan globalCartItems terhubung
 
 class MenuPage extends StatelessWidget {
   final String restaurantName;
@@ -165,9 +166,9 @@ class MenuPage extends StatelessWidget {
                   const SizedBox(height: 30),
 
                   // --- 3. DAFTAR MENU MAKANAN (DIBUAT DINAMIS BERDASARKAN DATA) ---
-                  // Melakukan looping (.map) pada data menus yang dikirim dari HomePage
                   ...menus.map((menuItem) {
                     return _buildMenuItemList(
+                      context, // Menambahkan context ke fungsi
                       menuItem['name'],
                       menuItem['price'],
                       menuItem['image'],
@@ -206,8 +207,13 @@ class MenuPage extends StatelessWidget {
   }
 
   // WIDGET KUSTOM: Baris Daftar Menu
-  Widget _buildMenuItemList(String name, String price, String imageUrl) {
-    // Mengecek apakah gambar menu berupa URL internet atau aset lokal
+  // Pastikan BuildContext dimasukkan di sini agar Navigator berfungsi
+  Widget _buildMenuItemList(
+    BuildContext context,
+    String name,
+    String price,
+    String imageUrl,
+  ) {
     bool isMenuNetwork = imageUrl.startsWith('http');
 
     return Column(
@@ -284,7 +290,21 @@ class MenuPage extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   icon: const Icon(Icons.add, color: Colors.white, size: 22),
                   onPressed: () {
-                    // Aksi saat menambah pesanan ke keranjang
+                    // 1. Tambahkan ke keranjang global
+                    globalCartItems.add({
+                      'name': name,
+                      'price': price,
+                      'image': imageUrl,
+                      'description':
+                          restaurantName, // Nama restoran sebagai catatan
+                      'quantity': 1, // Jumlah awal
+                    });
+
+                    // 2. Berpindah otomatis ke CartPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CartPage()),
+                    );
                   },
                 ),
               ),
