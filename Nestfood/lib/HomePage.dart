@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -447,29 +448,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   // WIDGET KUSTOM: Bottom Navigation Item
-  Widget _buildBottomNavItem(IconData icon, String label, int index) {
+  Widget _buildBottomNavItem(
+    IconData icon,
+    String label,
+    int index,
+  ) {
     bool isSelected = _selectedIndex == index;
+
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
+        if (index == 4) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AccountPage(),
+            ),
+          );
+        } else {
+          setState(() {
+            _selectedIndex = index;
+          });
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
-            color: isSelected ? _primaryGreen : Colors.grey.shade500,
+            color: isSelected
+                ? _primaryGreen
+                : Colors.grey.shade500,
             size: 26,
           ),
           const SizedBox(height: 2),
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? _primaryGreen : Colors.grey.shade500,
+              color: isSelected
+                  ? _primaryGreen
+                  : Colors.grey.shade500,
               fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: isSelected
+                  ? FontWeight.w600
+                  : FontWeight.normal,
             ),
           ),
         ],
