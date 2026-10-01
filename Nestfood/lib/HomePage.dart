@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'AccountPage.dart'; // Menghubungkan ke file AccountPage.dart
-import 'CartPage.dart';
+import 'MenuPage.dart'; // Menghubungkan ke file MenuPage.dart
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,8 +14,6 @@ class _HomePageState extends State<HomePage> {
   final Color _primaryGreen = const Color(0xFF38683A);
   int _selectedIndex = 0; // Untuk Bottom Navigation Bar
 
-  final ScrollController _scrollController = ScrollController();
-
   // Data makanan ilustrasi
   final List<Map<String, dynamic>> _foodItems = [
     {
@@ -23,28 +21,102 @@ class _HomePageState extends State<HomePage> {
       'rating': '4.7',
       'reviews': '1,3RB',
       'distance': '2.3KM',
-      'image': 'Asset/Image/Bakso.Jpeg', // Ganti dengan path gambar lokal
+      'image': 'Asset/Image/Bakso.jpeg',
+      'menus': [
+        {
+          'name': 'Bakso Biasa',
+          'price': 'Rp 15.000',
+          'image':
+              'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Bakso Urat',
+          'price': 'Rp 17.000',
+          'image':
+              'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Bakso Goreng',
+          'price': 'Rp 20.000',
+          'image':
+              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+        },
+      ],
     },
     {
       'name': 'Sate ayam bang jamal',
       'rating': '4.6',
       'reviews': '1,6RB',
       'distance': '4.3KM',
-      'image': 'Asset/Image/Sate.Png', // Ganti dengan path gambar lokal
+      'image': 'Asset/Image/Sate.png',
+      'menus': [
+        {
+          'name': 'Sate Ayam Bumbu Kacang',
+          'price': 'Rp 25.000',
+          'image':
+              'https://images.unsplash.com/photo-1555126634-ae235c345cc6?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Sate Taichan',
+          'price': 'Rp 22.000',
+          'image':
+              'https://images.unsplash.com/photo-1555126634-ae235c345cc6?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Lontong',
+          'price': 'Rp 5.000',
+          'image':
+              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+        },
+      ],
     },
     {
       'name': 'Seblak Harkit',
       'rating': '4.5',
       'reviews': '1 RB',
       'distance': '5.3KM',
-      'image': 'Asset/Image/Seblak.png', // Ganti dengan path gambar lokal
+      'image': 'Asset/Image/Seblak.png',
+      'menus': [
+        {
+          'name': 'Seblak Biasa',
+          'price': 'Rp 12.000',
+          'image':
+              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Seblak Ceker',
+          'price': 'Rp 15.000',
+          'image':
+              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Seblak Spesial',
+          'price': 'Rp 20.000',
+          'image':
+              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+        },
+      ],
     },
     {
       'name': 'Nasi goreng pak joko',
       'rating': '4.8',
       'reviews': '2 RB',
       'distance': '2.3KM',
-      'image': 'Asset/Image/Nasigoreng.png', // Ganti dengan path gambar lokal
+      'image': 'Asset/Image/Nasigoreng.png',
+      'menus': [
+        {
+          'name': 'Nasi Goreng Ayam',
+          'price': 'Rp 18.000',
+          'image':
+              'https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=200&q=80',
+        },
+        {
+          'name': 'Nasi Goreng Seafood',
+          'price': 'Rp 25.000',
+          'image':
+              'https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=200&q=80',
+        },
+      ],
     },
   ];
 
@@ -56,7 +128,6 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            controller: _scrollController,
             child: Column(
               children: [
                 // --- HEADER HIJAU LENGKUNG ---
@@ -353,190 +424,163 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM)
+  // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM) - SUDAH DITAMBAHKAN NAVIGASI
   Widget _buildFoodCard(Map<String, dynamic> item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade300, width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Gambar Makanan
-          Expanded(
-            flex: 3, // Porsi gambar lebih besar
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(13),
-                topRight: Radius.circular(13),
-              ),
-              child: Image.asset(
-                item['image'],
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+    bool isNetworkImage = item['image'].toString().startsWith('http');
+
+    return GestureDetector(
+      onTap: () {
+        // Navigasi ke halaman MenuPage saat kartu ditekan
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MenuPage(
+              restaurantName:
+                  item['name'], // Mengirim nama restoran "Bakso ojo lali" dll
+              imagePath: item['image'], // Mengirim path gambar restoran
+              isNetworkImage: isNetworkImage,
+              menus:
+                  item['menus'], // Mengirim info apakah gambar dari internet atau lokal
             ),
           ),
-          // Detail Makanan
-          Expanded(
-            flex: 2, // Porsi teks
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 8.0,
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade300, width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.15),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Gambar Makanan
+            Expanded(
+              flex: 3, // Porsi gambar lebih besar
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  topRight: Radius.circular(13),
+                ),
+                child: isNetworkImage
+                    ? Image.network(
+                        item['image'],
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        item['image'],
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    item['name'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                      color: Colors.black87,
+            ),
+            // Detail Makanan
+            Expanded(
+              flex: 2, // Porsi teks
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      item['name'],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: Colors.black87,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 12),
-                      const SizedBox(width: 2),
-                      Text(
-                        item['rating'],
-                        style: const TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 12),
+                        const SizedBox(width: 2),
+                        Text(
+                          item['rating'],
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        item['reviews'],
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade600,
+                        const SizedBox(width: 4),
+                        Text(
+                          item['reviews'],
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '• ${item['distance']}',
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade600,
+                        const Spacer(),
+                        Text(
+                          '• ${item['distance']}',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   // WIDGET KUSTOM: Bottom Navigation Item
-  Widget _buildBottomNavItem(
-    IconData icon,
-    String label,
-    int index,
-  ) {
+  Widget _buildBottomNavItem(IconData icon, String label, int index) {
     bool isSelected = _selectedIndex == index;
-
     return GestureDetector(
-      onTap: () async {
-
-        // =========================
-        // PESANAN / KERANJANG
-        // =========================
-        if (index == 2) {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CartPage(),
-            ),
-          );
-
-          // Setelah keluar dari CartPage
-          if (!mounted) return;
-
-          setState(() {
-            _selectedIndex = 0;
-          });
-
-          // Kembali ke bagian paling atas Home
-          _scrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-
-          return;
-        }
-
-        // =========================
-        // ACCOUNT
-        // =========================
-        if (index == 4) {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AccountPage(),
-            ),
-          );
-
-          if (!mounted) return;
-
-          setState(() {
-            _selectedIndex = 0;
-          });
-
-          return;
-        }
-
-        // =========================
-        // MENU BIASA
-        // =========================
+      onTap: () {
         setState(() {
           _selectedIndex = index;
         });
-      },
 
+        // Logika Navigasi: Jika indeks 4 (Account) ditekan, pindah ke AccountPage
+        if (index == 4) {
+          // Reset index ke 0 agar saat kembali ke halaman ini ikon Home tetap aktif
+          setState(() {
+            _selectedIndex = 0;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AccountPage()),
+          );
+        }
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
-            color: isSelected
-                ? _primaryGreen
-                : Colors.grey.shade500,
+            color: isSelected ? _primaryGreen : Colors.grey.shade500,
             size: 26,
           ),
-
           const SizedBox(height: 2),
-
           Text(
             label,
             style: TextStyle(
-              color: isSelected
-                  ? _primaryGreen
-                  : Colors.grey.shade500,
+              color: isSelected ? _primaryGreen : Colors.grey.shade500,
               fontSize: 10,
-              fontWeight: isSelected
-                  ? FontWeight.w600
-                  : FontWeight.normal,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ],
