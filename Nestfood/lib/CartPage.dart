@@ -10,191 +10,169 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      body: SafeArea(
-        child: Column(
-          children: [
-            // =========================
-            // HEADER
-            // =========================
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 15, 20, 10),
-              child: Row(
+      // =========================
+      // HEADER
+      // =========================
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: primaryGreen, size: 26),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Keranjang',
+          style: TextStyle(
+            color: primaryGreen,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+
+      // =========================
+      // BAGIAN BAWAH (TOTAL & CHECKOUT)
+      // =========================
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 15,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Baris Total Harga
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: primaryGreen,
-                      size: 22,
-                    ),
-                  ),
-
-                  const SizedBox(width: 8),
-
                   Text(
-                    'Keranjang',
+                    'Total',
                     style: TextStyle(
                       color: primaryGreen,
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    'Rp 40.000',
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 15),
 
-            // =========================
-            // ISI KERANJANG
-            // =========================
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(15, 5, 15, 20),
-                child: Column(
-                  children: [
-                    _buildCartItem(
-                      image: 'Asset/Image/Sate.Png',
-                      name: 'Sate Bang Jamal',
-                      description: 'Sate ayam + lontong',
-                      price: 'Rp. 20.000',
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    _buildCartItem(
-                      image: 'Asset/Image/Sate.Png',
-                      name: 'Sate Bang Jamal',
-                      description: 'Sate ayam + lontong',
-                      price: 'Rp. 20.000',
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // =========================
-                    // KEMASAN
-                    // =========================
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Kemasan',
-                        style: TextStyle(
-                          color: primaryGreen,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 6),
-
-                    _buildPackagingOption(
-                      icon: Icons.recycling,
-                      title: 'Reusable',
-                      subtitle: '(Dikembalikan)',
-                      price: '+2.000',
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    // =========================
-                    // PESANAN TANPA PLASTIK
-                    // =========================
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE5F1E6),
-                        borderRadius: BorderRadius.circular(7),
-                        border: Border.all(
-                          color: const Color(0xFFC7DCC9),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          const Text(
-                            '🌱',
-                            style: TextStyle(fontSize: 22),
-                          ),
-
-                          const SizedBox(width: 8),
-
-                          Expanded(
-                            child: Text(
-                              'Tidak perlu alat makan sekali pakai\n'
-                              'termasuk telah mendukung UMKM',
-                              style: TextStyle(
-                                color: primaryGreen,
-                                fontSize: 9,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // =========================
-                    // TOTAL
-                    // =========================
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total',
-                          style: TextStyle(
-                            color: primaryGreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-
-                        Text(
-                          'Rp.40.000',
-                          style: TextStyle(
-                            color: primaryGreen,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    // =========================
-                    // BUTTON BUAT PESANAN
-                    // =========================
-                    SizedBox(
-                      width: double.infinity,
-                      height: 42,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Nanti bisa diarahkan ke halaman checkout
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryGreen,
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Buat pesanan',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              // Tombol Buat Pesanan
+              ElevatedButton(
+                onPressed: () {
+                  // Nanti bisa diarahkan ke halaman checkout
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryGreen,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(
+                    double.infinity,
+                    55,
+                  ), // Sama seperti tombol Login/Keluar
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                 ),
+                child: const Text(
+                  'Buat pesanan',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
+      // =========================
+      // ISI KERANJANG UTAMA
+      // =========================
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Item Pesanan 1
+            _buildCartItem(
+              image:
+                  'Asset/Image/Sate.png', // Pastikan huruf P-nya sesuai ekstensi asli Anda (png/Png)
+              name: 'Sate Bang Jamal',
+              description: 'Sate ayam + lontong',
+              price: 'Rp 20.000',
+            ),
+            const SizedBox(height: 15),
+
+            // Item Pesanan 2
+            _buildCartItem(
+              image: 'Asset/Image/Sate.png',
+              name: 'Sate Bang Jamal',
+              description: 'Sate ayam + lontong',
+              price: 'Rp 20.000',
+            ),
+            const SizedBox(height: 25),
+
+            // Judul Kemasan
+            Text(
+              'Kemasan',
+              style: TextStyle(
+                color: primaryGreen,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            // Pilihan Kemasan Reusable
+            _buildPackagingOption(
+              icon: Icons.recycling,
+              title: 'Reusable',
+              subtitle: '(Dikembalikan)',
+              price: '+ Rp 2.000',
+            ),
+            const SizedBox(height: 15),
+
+            // Banner Go-Green (Pesanan tanpa plastik)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE5F2E6), // Hijau pudar
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFC7DCC9)),
+              ),
+              child: Row(
+                children: [
+                  const Text('🌱', style: TextStyle(fontSize: 24)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Tidak perlu alat makan sekali pakai,\nterima kasih telah mendukung UMKM & Lingkungan',
+                      style: TextStyle(
+                        color: primaryGreen,
+                        fontSize: 12, // Ukuran teks yang bisa dibaca nyaman
+                        fontWeight: FontWeight.w500,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -204,9 +182,8 @@ class CartPage extends StatelessWidget {
   }
 
   // =====================================================
-  // ITEM MAKANAN
+  // WIDGET ITEM MAKANAN DI KERANJANG
   // =====================================================
-
   Widget _buildCartItem({
     required String image,
     required String name,
@@ -215,31 +192,35 @@ class CartPage extends StatelessWidget {
   }) {
     return Container(
       width: double.infinity,
-      height: 90,
-      padding: const EdgeInsets.all(7),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: const Color(0xFFB5CCB7),
-        ),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // FOTO
+          // Gambar Menu
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(12),
             child: Image.asset(
               image,
-              width: 70,
-              height: 70,
+              width: 80, // Diperbesar
+              height: 80,
               fit: BoxFit.cover,
             ),
           ),
+          const SizedBox(width: 15),
 
-          const SizedBox(width: 9),
-
-          // DETAIL
+          // Detail Makanan
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -247,67 +228,104 @@ class CartPage extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 16, // Diperbesar
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-
-                const SizedBox(height: 6),
-
+                const SizedBox(height: 4),
                 Text(
                   description,
-                  style: const TextStyle(
-                    fontSize: 8,
-                    color: Colors.black87,
+                  style: TextStyle(
+                    fontSize: 12, // Diperbesar
+                    color: Colors.grey.shade600,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-
-                const SizedBox(height: 2),
-
+                const SizedBox(height: 8),
                 Text(
                   price,
-                  style: const TextStyle(
-                    fontSize: 8,
-                    color: Colors.black87,
+                  style: TextStyle(
+                    fontSize: 14, // Diperbesar
+                    color: primaryGreen,
+                    fontWeight: FontWeight.w900,
                   ),
-                ),
-
-                const Spacer(),
-
-                // JUMLAH
-                Row(
-                  children: [
-                    Container(
-                      width: 38,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Colors.grey.shade300,
-                        ),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          '-   1   +',
-                          style: TextStyle(fontSize: 7),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
           ),
 
-          // DELETE
-          const Padding(
-            padding: EdgeInsets.only(right: 5),
-            child: Icon(
-              Icons.delete,
-              color: Color(0xFF38683A),
-              size: 15,
-            ),
+          // Kontrol Kuantitas & Tombol Hapus
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Ikon Hapus
+              IconButton(
+                onPressed: () {},
+                constraints: const BoxConstraints(),
+                padding: const EdgeInsets.only(bottom: 10, right: 0),
+                icon: Icon(Icons.delete_outline, color: primaryGreen, size: 22),
+              ),
+
+              // Kotak Jumlah Pesanan (- 1 +)
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () {},
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          '-',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        '1',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          '+',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -315,9 +333,8 @@ class CartPage extends StatelessWidget {
   }
 
   // =====================================================
-  // KEMASAN
+  // WIDGET OPSI KEMASAN
   // =====================================================
-
   Widget _buildPackagingOption({
     required IconData icon,
     required String title,
@@ -326,71 +343,63 @@ class CartPage extends StatelessWidget {
   }) {
     return Container(
       width: double.infinity,
-      height: 38,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
       decoration: BoxDecoration(
         color: const Color(0xFFF4F8F4),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Colors.grey.shade300,
-        ),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
       ),
       child: Row(
         children: [
+          // Ikon Kemasan
           Container(
-            width: 25,
-            height: 25,
+            padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
               color: Color(0xFFDDEDDD),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.recycling,
-              color: Color(0xFF38683A),
-              size: 16,
-            ),
+            child: Icon(icon, color: primaryGreen, size: 20), // Ikon diperbesar
           ),
+          const SizedBox(width: 15),
 
-          const SizedBox(width: 7),
-
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 8,
-              color: Color(0xFF38683A),
-              fontWeight: FontWeight.bold,
-            ),
+          // Teks Kemasan
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14, // Diperbesar
+                  color: primaryGreen,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 12, // Diperbesar
+                  color: Colors.grey,
+                ),
+              ),
+            ],
           ),
-
-          const SizedBox(width: 3),
-
-          Text(
-            subtitle,
-            style: const TextStyle(
-              fontSize: 7,
-              color: Colors.grey,
-            ),
-          ),
-
           const Spacer(),
 
+          // Harga Kemasan
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 3,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Colors.grey.shade300,
-              ),
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: Colors.grey.shade300),
             ),
             child: Text(
               price,
-              style: const TextStyle(
-                fontSize: 7,
-                color: Color(0xFF38683A),
+              style: TextStyle(
+                fontSize: 12, // Diperbesar
+                fontWeight: FontWeight.w600,
+                color: primaryGreen,
               ),
             ),
           ),

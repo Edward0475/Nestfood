@@ -67,8 +67,8 @@ flutter:
     - Asset/Image/Rec.png
     - Asset/Image/Tre.png
     - Asset/Image/Seblak.png
-    - Asset/Image/Bakso.Jpeg
-    - Asset/Image/Sate.Png
+    - Asset/Image/Bakso.jpeg
+    - Asset/Image/Sate.png
     - Asset/Image/Nasigoreng.png
     
   # An image asset can refer to one or more resolution-specific "variants", see

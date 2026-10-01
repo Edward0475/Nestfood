@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'AccountPage.dart'; // Menghubungkan ke file AccountPage.dart
-import 'MenuPage.dart'; // Menghubungkan ke file MenuPage.dart
+import 'AccountPage.dart';
+import 'MenuPage.dart';
+import 'CartPage.dart'; // <--- PASTIKAN IMPORT INI DITAMBAHKAN
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,11 +11,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Warna utama berdasarkan desain
   final Color _primaryGreen = const Color(0xFF38683A);
-  int _selectedIndex = 0; // Untuk Bottom Navigation Bar
+  int _selectedIndex = 0;
 
-  // Data makanan ilustrasi
+  // Data makanan
   final List<Map<String, dynamic>> _foodItems = [
     {
       'name': 'Bakso ojo lali',
@@ -123,8 +123,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          Colors.white, // Background keseluruhan putih sesuai desain
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -147,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Column(
                     children: [
-                      // Lokasi & Notifikasi
+                      // Lokasi, Keranjang, & Notifikasi
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -170,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   Text(
-                                    'Alam Sutera, Tangerang Selatan', // Typo diperbaiki dari tanggerang
+                                    'Alam Sutera, Tangerang Selatan',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -181,10 +180,33 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
-                          const Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                            size: 28,
+                          // --- IKON KERANJANG DAN NOTIFIKASI ---
+                          Row(
+                            children: [
+                              // Tombol Keranjang (Cart)
+                              IconButton(
+                                icon: const Icon(
+                                  Icons
+                                      .shopping_cart_outlined, // Icon keranjang
+                                  color: Colors.white,
+                                  size: 26,
+                                ),
+                                onPressed: () {
+                                  // Navigasi ke CartPage saat ditekan
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const CartPage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: 28,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -235,7 +257,7 @@ class _HomePageState extends State<HomePage> {
                           border: Border.all(
                             color: const Color.fromARGB(255, 248, 248, 248),
                             width: 2,
-                          ), // Kotak biru pilihan di desain
+                          ),
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(13),
@@ -253,14 +275,8 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           _build3RMenu('Asset/Image/Foodbox.png', 'Refuse'),
-                          _build3RMenu(
-                            'Asset/Image/Rec.png',
-                            'Recycle',
-                          ), // Typo diperbaiki
-                          _build3RMenu(
-                            'Asset/Image/Tre.png',
-                            'Upcycle',
-                          ), // Typo diperbaiki
+                          _build3RMenu('Asset/Image/Rec.png', 'Recycle'),
+                          _build3RMenu('Asset/Image/Tre.png', 'Upcycle'),
                         ],
                       ),
                       const SizedBox(height: 30),
@@ -314,9 +330,7 @@ class _HomePageState extends State<HomePage> {
 
                       // --- GRID MENU MAKANAN ---
                       GridView.builder(
-                        padding: const EdgeInsets.only(
-                          bottom: 80,
-                        ), // Ruang ekstra untuk Bottom Navigation
+                        padding: const EdgeInsets.only(bottom: 80),
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
@@ -324,8 +338,7 @@ class _HomePageState extends State<HomePage> {
                               crossAxisCount: 2,
                               crossAxisSpacing: 15,
                               mainAxisSpacing: 15,
-                              childAspectRatio:
-                                  0.9, // Disesuaikan agar pas seperti desain
+                              childAspectRatio: 0.9,
                             ),
                         itemCount: _foodItems.length,
                         itemBuilder: (context, index) {
@@ -340,7 +353,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // --- BOTTOM NAVIGATION BAR MENGAMBANG (Sesuai desain) ---
+          // --- BOTTOM NAVIGATION BAR MENGAMBANG ---
           Positioned(
             bottom: 20,
             left: 20,
@@ -376,7 +389,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Menu 3R (Bentuk Persegi Panjang Melengkung)
+  // WIDGET KUSTOM: Menu 3R
   Widget _build3RMenu(String imagePath, String title) {
     return Container(
       width: 95,
@@ -396,11 +409,10 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Lingkaran hijau muda di belakang icon
           Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFE5F2E6), // Hijau sangat muda
+            decoration: const BoxDecoration(
+              color: Color(0xFFE5F2E6),
               shape: BoxShape.circle,
             ),
             child: Image.asset(
@@ -424,23 +436,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM) - SUDAH DITAMBAHKAN NAVIGASI
+  // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM)
   Widget _buildFoodCard(Map<String, dynamic> item) {
     bool isNetworkImage = item['image'].toString().startsWith('http');
 
     return GestureDetector(
       onTap: () {
-        // Navigasi ke halaman MenuPage saat kartu ditekan
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => MenuPage(
-              restaurantName:
-                  item['name'], // Mengirim nama restoran "Bakso ojo lali" dll
-              imagePath: item['image'], // Mengirim path gambar restoran
+              restaurantName: item['name'],
+              imagePath: item['image'],
               isNetworkImage: isNetworkImage,
-              menus:
-                  item['menus'], // Mengirim info apakah gambar dari internet atau lokal
+              menus: item['menus'], // Pastikan mengirim data menu ke MenuPage
             ),
           ),
         );
@@ -463,7 +472,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Gambar Makanan
             Expanded(
-              flex: 3, // Porsi gambar lebih besar
+              flex: 3,
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(13),
@@ -484,7 +493,7 @@ class _HomePageState extends State<HomePage> {
             ),
             // Detail Makanan
             Expanded(
-              flex: 2, // Porsi teks
+              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10.0,
@@ -555,7 +564,6 @@ class _HomePageState extends State<HomePage> {
 
         // Logika Navigasi: Jika indeks 4 (Account) ditekan, pindah ke AccountPage
         if (index == 4) {
-          // Reset index ke 0 agar saat kembali ke halaman ini ikon Home tetap aktif
           setState(() {
             _selectedIndex = 0;
           });
