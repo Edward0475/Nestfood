@@ -14,160 +14,173 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+      return Scaffold(
+        backgroundColor: Colors.white,
 
-      body: Column(
-        children: [
-          // =========================
-          // HEADER PROFIL
-          // =========================
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.fromLTRB(20, 45, 20, 25),
-            decoration: BoxDecoration(
-              color: primaryGreen,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
+        body: Column(
+          children: [
+            // =========================
+            // HEADER PROFIL
+            // =========================
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 45, 20, 25),
+              decoration: BoxDecoration(
+                color: primaryGreen,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25),
+                ),
+              ),
+              child: Row(
+                children: [
+                  // Foto profil
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      size: 38,
+                      color: Colors.grey.shade400,
+                    ),
+                  ),
+
+                  const SizedBox(width: 15),
+
+                  // Nama & email
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Edward Jeremy',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'edward@gmail.com',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
+
+            // =========================
+            // MENU AKUN
+            // =========================
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.only(top: 10),
+                children: [
+                  _buildMenuItem(
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Pesanan Saya',
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.location_on_outlined,
+                    title: 'Alamat Saya',
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.credit_card_outlined,
+                    title: 'Metode Pembayaran',
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.settings_outlined,
+                    title: 'Pengaturan',
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.help_outline,
+                    title: 'Pusat Bantuan',
+                  ),
+
+                  _buildMenuItem(
+                    icon: Icons.info_outline,
+                    title: 'Tentang NestFood',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+
+        // =========================
+        // BOTTOM NAVIGATION
+        // =========================
+        bottomNavigationBar: Container(
+            margin: const EdgeInsets.only(
+              left: 4,
+              right: 4,
+              bottom: 4,
+            ),
+            height: 70,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(35),
+              border: Border.all(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.10),
+                  blurRadius: 5,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Foto profil
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    size: 38,
-                    color: Colors.grey.shade400,
-                  ),
+                _buildBottomNavItem(
+                  Icons.home_outlined,
+                  'Home',
+                  0,
                 ),
 
-                const SizedBox(width: 15),
+                _buildBottomNavItem(
+                  Icons.search,
+                  'Search',
+                  1,
+                ),
 
-                // Nama & email
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Edward Jeremy',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      'edward@gmail.com',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                _buildBottomNavItem(
+                  Icons.receipt_long,
+                  'Pesanan',
+                  2,
+                ),
+
+                _buildBottomNavItem(
+                  Icons.favorite,
+                  'Favorite',
+                  3,
+                ),
+
+                _buildBottomNavItem(
+                  Icons.person,
+                  'Account',
+                  4,
                 ),
               ],
             ),
           ),
-
-          // =========================
-          // MENU AKUN
-          // =========================
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(top: 10),
-              children: [
-                _buildMenuItem(
-                  icon: Icons.receipt_long_outlined,
-                  title: 'Pesanan Saya',
-                ),
-
-                _buildMenuItem(
-                  icon: Icons.location_on_outlined,
-                  title: 'Alamat Saya',
-                ),
-
-                _buildMenuItem(
-                  icon: Icons.credit_card_outlined,
-                  title: 'Metode Pembayaran',
-                ),
-
-                _buildMenuItem(
-                  icon: Icons.settings_outlined,
-                  title: 'Pengaturan',
-                ),
-
-                _buildMenuItem(
-                  icon: Icons.help_outline,
-                  title: 'Pusat Bantuan',
-                ),
-
-                _buildMenuItem(
-                  icon: Icons.info_outline,
-                  title: 'Tentang NestFood',
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-
-      // =========================
-      // BOTTOM NAVIGATION
-      // =========================
-      bottomNavigationBar: Container(
-        height: 75,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(
-              color: Colors.grey.shade200,
-            ),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-                _buildBottomNavItem(
-                    Icons.home_outlined,
-                    'Home',
-                    0,
-                ),
-
-                _buildBottomNavItem(
-                    Icons.search,
-                    'Search',
-                    1,
-                ),
-
-                _buildBottomNavItem(
-                    Icons.receipt_long,
-                    'Pesanan',
-                    2,
-                ),
-
-                _buildBottomNavItem(
-                    Icons.favorite,
-                    'Favorite',
-                    3,
-                ),
-
-                _buildBottomNavItem(
-                    Icons.person,
-                    'Account',
-                    4,
-                ),
-            ],
-        ),
-      ),
-    );
+        
+      );
   }
 
   // =========================
