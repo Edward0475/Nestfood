@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'AccountPage.dart'; // Menghubungkan ke file AccountPage.dart
+import 'CartPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,8 @@ class _HomePageState extends State<HomePage> {
   // Warna utama berdasarkan desain
   final Color _primaryGreen = const Color(0xFF38683A);
   int _selectedIndex = 0; // Untuk Bottom Navigation Bar
+
+  final ScrollController _scrollController = ScrollController();
 
   // Data makanan ilustrasi
   final List<Map<String, dynamic>> _foodItems = [
@@ -53,6 +56,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 // --- HEADER HIJAU LENGKUNG ---
@@ -444,42 +448,95 @@ class _HomePageState extends State<HomePage> {
   }
 
   // WIDGET KUSTOM: Bottom Navigation Item
-  Widget _buildBottomNavItem(IconData icon, String label, int index) {
+  Widget _buildBottomNavItem(
+    IconData icon,
+    String label,
+    int index,
+  ) {
     bool isSelected = _selectedIndex == index;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
 
-        // Logika Navigasi: Jika indeks 4 (Account) ditekan, pindah ke AccountPage
-        if (index == 4) {
-          // Reset index ke 0 agar saat kembali ke halaman ini ikon Home tetap aktif
+    return GestureDetector(
+      onTap: () async {
+
+        // =========================
+        // PESANAN / KERANJANG
+        // =========================
+        if (index == 2) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CartPage(),
+            ),
+          );
+
+          // Setelah keluar dari CartPage
+          if (!mounted) return;
+
           setState(() {
             _selectedIndex = 0;
           });
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AccountPage()),
+          // Kembali ke bagian paling atas Home
+          _scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
           );
+
+          return;
         }
+
+        // =========================
+        // ACCOUNT
+        // =========================
+        if (index == 4) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AccountPage(),
+            ),
+          );
+
+          if (!mounted) return;
+
+          setState(() {
+            _selectedIndex = 0;
+          });
+
+          return;
+        }
+
+        // =========================
+        // MENU BIASA
+        // =========================
+        setState(() {
+          _selectedIndex = index;
+        });
       },
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
-            color: isSelected ? _primaryGreen : Colors.grey.shade500,
+            color: isSelected
+                ? _primaryGreen
+                : Colors.grey.shade500,
             size: 26,
           ),
+
           const SizedBox(height: 2),
+
           Text(
             label,
             style: TextStyle(
-              color: isSelected ? _primaryGreen : Colors.grey.shade500,
+              color: isSelected
+                  ? _primaryGreen
+                  : Colors.grey.shade500,
               fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              fontWeight: isSelected
+                  ? FontWeight.w600
+                  : FontWeight.normal,
             ),
           ),
         ],
