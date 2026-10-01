@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Profile.dart';
+import 'BaksoOjoLali.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
       'reviews': '1,3RB',
       'distance': '2.3KM',
       'image':
-          'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          'https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480/img/recipe/ras/Assets/193a3f08ee8bdb713ea0e392beccc4cd/Derivates/bd9265788361a10041eb31dd210c547c211ef509.jpg',
     },
     {
       'name': 'Sate ayam bang jamal',
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       'reviews': '1,6RB',
       'distance': '4.3KM',
       'image':
-          'https://images.unsplash.com/photo-1555126634-ae235c345cc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3PvAPlM3nPBwwSjhoxoNo4RTPUaj2PL0mKHDTPsLlR_axPapnK6Vhn5k&s=10',
     },
     {
       'name': 'Seblak Harkit',
@@ -355,98 +356,129 @@ class _HomePageState extends State<HomePage> {
 
   // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM)
   Widget _buildFoodCard(Map<String, dynamic> item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade300, width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
-            blurRadius: 5,
-            offset: const Offset(0, 3),
+    return GestureDetector(
+      onTap: () {
+        if (item['name'] == 'Bakso ojo lali') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const BaksoOjoLaliPage(),
+            ),
+          );
+        }
+      },
+
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: Colors.grey.shade300,
+            width: 1.5,
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Gambar Makanan
-          Expanded(
-            flex: 3, // Porsi gambar lebih besar
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(13),
-                topRight: Radius.circular(13),
-              ),
-              child: Image.network(
-                item['image'],
-                width: double.infinity,
-                fit: BoxFit.cover,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.15),
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            // Gambar Makanan
+            Expanded(
+              flex: 3,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(13),
+                  topRight: Radius.circular(13),
+                ),
+                child: Image.network(
+                  item['image'],
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          // Detail Makanan
-          Expanded(
-            flex: 2, // Porsi teks
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 8.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    item['name'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 11,
-                      color: Colors.black87,
+
+            // Detail Makanan
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
+                  vertical: 8.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Text(
+                      item['name'],
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 11,
+                        color: Colors.black87,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.star, color: Colors.amber, size: 12),
-                      const SizedBox(width: 2),
-                      Text(
-                        item['rating'],
-                        style: const TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
+
+                    const SizedBox(height: 4),
+
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 12,
                         ),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        item['reviews'],
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade600,
+
+                        const SizedBox(width: 2),
+
+                        Text(
+                          item['rating'],
+                          style: const TextStyle(
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '• ${item['distance']}',
-                        style: TextStyle(
-                          fontSize: 9,
-                          color: Colors.grey.shade600,
+
+                        const SizedBox(width: 4),
+
+                        Text(
+                          item['reviews'],
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey.shade600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+
+                        const Spacer(),
+
+                        Text(
+                          '• ${item['distance']}',
+                          style: TextStyle(
+                            fontSize: 9,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-
   // WIDGET KUSTOM: Bottom Navigation Item
   Widget _buildBottomNavItem(
     IconData icon,
