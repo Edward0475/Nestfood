@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'CheckOutPage.dart'; // Pastikan file CheckoutPage.dart berada di folder yang sama (lib/)
 
 // ===================================================================
 // VARIABEL GLOBAL: Untuk menyimpan data keranjang sementara
@@ -115,6 +116,12 @@ class _CartPageState extends State<CartPage> {
                     ElevatedButton(
                       onPressed: () {
                         // Nanti bisa diarahkan ke halaman pembayaran
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CheckoutPage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: primaryGreen,

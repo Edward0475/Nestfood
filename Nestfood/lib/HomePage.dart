@@ -27,19 +27,19 @@ class _HomePageState extends State<HomePage> {
           'name': 'Bakso Biasa',
           'price': 'Rp 15.000',
           'image':
-              'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/BaksoBiasa.png',
         },
         {
           'name': 'Bakso Urat',
           'price': 'Rp 17.000',
           'image':
-              'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/BaksoUrat.png',
         },
         {
           'name': 'Bakso Goreng',
           'price': 'Rp 20.000',
           'image':
-              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/BaksoGoreng.png',
         },
       ],
     },
@@ -54,19 +54,19 @@ class _HomePageState extends State<HomePage> {
           'name': 'Sate Ayam Bumbu Kacang',
           'price': 'Rp 25.000',
           'image':
-              'https://images.unsplash.com/photo-1555126634-ae235c345cc6?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/SateKacang.png',
         },
         {
           'name': 'Sate Taichan',
           'price': 'Rp 22.000',
           'image':
-              'https://images.unsplash.com/photo-1555126634-ae235c345cc6?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/SateTaichan.png',
         },
         {
           'name': 'Lontong',
           'price': 'Rp 5.000',
           'image':
-              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/Lontong.png',
         },
       ],
     },
@@ -81,19 +81,19 @@ class _HomePageState extends State<HomePage> {
           'name': 'Seblak Biasa',
           'price': 'Rp 12.000',
           'image':
-              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/SeblakBiasa.png',
         },
         {
           'name': 'Seblak Ceker',
           'price': 'Rp 15.000',
           'image':
-              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/SeblakCeker.png',
         },
         {
           'name': 'Seblak Spesial',
           'price': 'Rp 20.000',
           'image':
-              'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/SeblakSpesial.png',
         },
       ],
     },
@@ -108,13 +108,13 @@ class _HomePageState extends State<HomePage> {
           'name': 'Nasi Goreng Ayam',
           'price': 'Rp 18.000',
           'image':
-              'https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/NasGorAyam.png',
         },
         {
           'name': 'Nasi Goreng Seafood',
           'price': 'Rp 25.000',
           'image':
-              'https://images.unsplash.com/photo-1557872943-16a5ac26437e?auto=format&fit=crop&w=200&q=80',
+              'Asset/Image/NasGorSeafood.png',
         },
       ],
     },
