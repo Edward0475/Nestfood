@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'AccountPage.dart'; // Menghubungkan ke file AccountPage.dart
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,32 +20,28 @@ class _HomePageState extends State<HomePage> {
       'rating': '4.7',
       'reviews': '1,3RB',
       'distance': '2.3KM',
-      'image':
-          'https://images.unsplash.com/photo-1582878826629-29b7ad1cb461?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      'image': 'Asset/Image/Bakso.Jpeg', // Ganti dengan path gambar lokal
     },
     {
       'name': 'Sate ayam bang jamal',
       'rating': '4.6',
       'reviews': '1,6RB',
       'distance': '4.3KM',
-      'image':
-          'https://images.unsplash.com/photo-1555126634-ae235c345cc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      'image': 'Asset/Image/Sate.Png', // Ganti dengan path gambar lokal
     },
     {
       'name': 'Seblak Harkit',
       'rating': '4.5',
       'reviews': '1 RB',
       'distance': '5.3KM',
-      'image':
-          'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      'image': 'Asset/Image/Seblak.png', // Ganti dengan path gambar lokal
     },
     {
-      'name': 'Roku Ramen',
+      'name': 'Nasi goreng pak joko',
       'rating': '4.8',
       'reviews': '2 RB',
       'distance': '2.3KM',
-      'image':
-          'https://images.unsplash.com/photo-1557872943-16a5ac26437e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80',
+      'image': 'Asset/Image/Nasigoreng.png', // Ganti dengan path gambar lokal
     },
   ];
 
@@ -378,7 +375,7 @@ class _HomePageState extends State<HomePage> {
                 topLeft: Radius.circular(13),
                 topRight: Radius.circular(13),
               ),
-              child: Image.network(
+              child: Image.asset(
                 item['image'],
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -454,6 +451,19 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           _selectedIndex = index;
         });
+
+        // Logika Navigasi: Jika indeks 4 (Account) ditekan, pindah ke AccountPage
+        if (index == 4) {
+          // Reset index ke 0 agar saat kembali ke halaman ini ikon Home tetap aktif
+          setState(() {
+            _selectedIndex = 0;
+          });
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AccountPage()),
+          );
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
