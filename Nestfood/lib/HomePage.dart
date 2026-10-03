@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'AccountPage.dart';
 import 'MenuPage.dart';
 import 'CartPage.dart'; // <--- PASTIKAN IMPORT INI DITAMBAHKAN
+import 'Orderpage.dart';
+import 'Favorite.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,20 +28,17 @@ class _HomePageState extends State<HomePage> {
         {
           'name': 'Bakso Biasa',
           'price': 'Rp 15.000',
-          'image':
-              'Asset/Image/BaksoBiasa.png',
+          'image': 'Asset/Image/BaksoBiasa.png',
         },
         {
           'name': 'Bakso Urat',
           'price': 'Rp 17.000',
-          'image':
-              'Asset/Image/BaksoUrat.png',
+          'image': 'Asset/Image/BaksoUrat.png',
         },
         {
           'name': 'Bakso Goreng',
           'price': 'Rp 20.000',
-          'image':
-              'Asset/Image/BaksoGoreng.png',
+          'image': 'Asset/Image/BaksoGoreng.png',
         },
       ],
     },
@@ -53,20 +52,17 @@ class _HomePageState extends State<HomePage> {
         {
           'name': 'Sate Ayam Bumbu Kacang',
           'price': 'Rp 25.000',
-          'image':
-              'Asset/Image/SateKacang.png',
+          'image': 'Asset/Image/SateKacang.png',
         },
         {
           'name': 'Sate Taichan',
           'price': 'Rp 22.000',
-          'image':
-              'Asset/Image/SateTaichan.png',
+          'image': 'Asset/Image/SateTaichan.png',
         },
         {
           'name': 'Lontong',
           'price': 'Rp 5.000',
-          'image':
-              'Asset/Image/Lontong.png',
+          'image': 'Asset/Image/Lontong.png',
         },
       ],
     },
@@ -80,20 +76,17 @@ class _HomePageState extends State<HomePage> {
         {
           'name': 'Seblak Biasa',
           'price': 'Rp 12.000',
-          'image':
-              'Asset/Image/SeblakBiasa.png',
+          'image': 'Asset/Image/SeblakBiasa.png',
         },
         {
           'name': 'Seblak Ceker',
           'price': 'Rp 15.000',
-          'image':
-              'Asset/Image/SeblakCeker.png',
+          'image': 'Asset/Image/SeblakCeker.png',
         },
         {
           'name': 'Seblak Spesial',
           'price': 'Rp 20.000',
-          'image':
-              'Asset/Image/SeblakSpesial.png',
+          'image': 'Asset/Image/SeblakSpesial.png',
         },
       ],
     },
@@ -107,14 +100,12 @@ class _HomePageState extends State<HomePage> {
         {
           'name': 'Nasi Goreng Ayam',
           'price': 'Rp 18.000',
-          'image':
-              'Asset/Image/NasGorAyam.png',
+          'image': 'Asset/Image/NasGorAyam.png',
         },
         {
           'name': 'Nasi Goreng Seafood',
           'price': 'Rp 25.000',
-          'image':
-              'Asset/Image/NasGorSeafood.png',
+          'image': 'Asset/Image/NasGorSeafood.png',
         },
       ],
     },
@@ -558,40 +549,58 @@ class _HomePageState extends State<HomePage> {
     bool isSelected = _selectedIndex == index;
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
+        if (isSelected) return;
 
-        // Logika Navigasi: Jika indeks 4 (Account) ditekan, pindah ke AccountPage
-        if (index == 4) {
-          setState(() {
-            _selectedIndex = 0;
-          });
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AccountPage()),
-          );
+        Widget nextScreen;
+        switch (index) {
+          case 0:
+            return; // Sudah di Home
+          case 1:
+            return; // Search
+          case 2:
+            nextScreen = const OrderPage();
+            break;
+          case 3:
+            nextScreen = const FavoritePage();
+            break;
+          case 4:
+            nextScreen = const AccountPage();
+            break;
+          default:
+            return;
         }
+
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, a1, a2) => nextScreen,
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            color: isSelected ? _primaryGreen : Colors.grey.shade500,
-            size: 26,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? _primaryGreen : Colors.grey.shade500,
-              fontSize: 10,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+      child: Container(
+        color: Colors.transparent,
+        width: 60,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: isSelected ? _primaryGreen : Colors.grey.shade400,
+              size: 26,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? _primaryGreen : Colors.grey.shade400,
+                fontSize: 10,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
