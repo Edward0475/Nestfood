@@ -4,6 +4,7 @@ import 'MenuPage.dart';
 import 'CartPage.dart'; // <--- PASTIKAN IMPORT INI DITAMBAHKAN
 import 'Orderpage.dart';
 import 'Favorite.dart';
+import 'SearchPage.dart'; // Tambahkan ini di atas HomePage.dart, AccountPage.dart, dll
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -556,6 +557,8 @@ class _HomePageState extends State<HomePage> {
           case 0:
             return; // Sudah di Home
           case 1:
+            nextScreen = const SearchPage();
+            break;
             return; // Search
           case 2:
             nextScreen = const OrderPage();

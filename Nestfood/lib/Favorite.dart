@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
-import 'Orderpage.dart';
+import 'OrderPage.dart';
 import 'AccountPage.dart';
 
-class FavoritePage extends StatelessWidget {
+class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
 
+  @override
+  State<FavoritePage> createState() => _FavoritePageState();
+}
+
+class _FavoritePageState extends State<FavoritePage> {
   final Color _primaryGreen = const Color(0xFF38683A);
+
+  // State untuk filter kategori aktif
+  int _selectedCategoryIndex = 0;
+  final List<String> _categories = [
+    'Semua',
+    'Refuse (Minim Plastik)',
+    'Recycle (Wadah Reusable)',
+    'Upcycle',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +30,18 @@ class FavoritePage extends StatelessWidget {
         children: [
           // --- 1. KONTEN UTAMA ---
           SingleChildScrollView(
-            padding: const EdgeInsets.only(bottom: 120),
+            padding: const EdgeInsets.only(
+              bottom: 120,
+            ), // Jarak aman agar konten bawah tidak tertutup nav bar
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header Hijau
+                // --- HEADER HIJAU EKSKLUSIF ---
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(
                     top: 60,
-                    bottom: 25,
+                    bottom: 30,
                     left: 24,
                     right: 24,
                   ),
@@ -35,40 +51,85 @@ class FavoritePage extends StatelessWidget {
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
                     ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Favorit Saya',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w900,
+                    boxShadow: [
+                      BoxShadow(
+                        color: _primaryGreen.withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
                       ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'UMKM Favoritmu',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Pahlawan Bumi! Pilihan makananmu sangat membantu mengurangi sampah lingkungan. 🌱',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 13,
+                          height: 1.4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                // --- FILTER KATEGORI 3R ---
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    children: List.generate(
+                      _categories.length,
+                      (index) => _buildCategoryChip(index, _categories[index]),
                     ),
                   ),
                 ),
 
                 const SizedBox(height: 20),
 
-                // Daftar Favorit
+                // --- DAFTAR KARTU FAVORIT ---
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
-                      // --- MENGGUNAKAN GAMBAR LOKAL ANDA ---
                       _buildFavoriteCard(
-                        'Bakso ojo lali',
-                        'Kemasan Reusable',
-                        '4.7',
-                        'Asset/Image/BaksoBiasa.png', // <--- Path gambar diubah ke sini
+                        name: 'Bakso ojo lali',
+                        tag: 'Recycle (Wadah Reusable)',
+                        tagIcon: Icons.recycling,
+                        rating: '4.7',
+                        distance: '2.3 KM',
+                        imagePath: 'Asset/Image/BaksoBiasa.png', // Aset Lokal
                       ),
-                      const SizedBox(height: 15),
-                      // --- MENGGUNAKAN GAMBAR INTERNET SEBAGAI CONTOH ---
+                      const SizedBox(height: 16),
                       _buildFavoriteCard(
-                        'Sate ayam bang jamal',
-                        'Diskon Upcycle',
-                        '4.6',
-                        'Asset/Image/Sate.png', // <--- Path gambar diubah ke sini
+                        name: 'Sate ayam bang jamal',
+                        tag: 'Refuse (Tanpa Plastik)',
+                        tagIcon: Icons.block,
+                        rating: '4.6',
+                        distance: '4.3 KM',
+                        imagePath: 'Asset/Image/Sate.png', // Aset Lokal
+                      ),
+                      const SizedBox(height: 16),
+                      _buildFavoriteCard(
+                        name: 'Seblak Harkit',
+                        tag: 'Upcycle (Ampas Organik)',
+                        tagIcon: Icons.compost,
+                        rating: '4.8',
+                        distance: '5.3 KM',
+                        imagePath: 'Asset/Image/Seblak.png', // Aset Lokal
                       ),
                     ],
                   ),
@@ -77,22 +138,26 @@ class FavoritePage extends StatelessWidget {
             ),
           ),
 
-          // --- 2. BOTTOM NAVIGATION BAR MENGAMBANG ---
+          // --- 2. BOTTOM NAVIGATION BAR MENGAMBANG (UKURAN 100% KONSISTEN ALA IOS) ---
           Positioned(
-            bottom: 20,
+            bottom: 15, // Disamakan persis dengan halaman lain
             left: 20,
             right: 20,
             child: Container(
-              height: 70,
+              height: 70, // Disamakan tinggi kapsulnya
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(35),
-                border: Border.all(color: Colors.grey.shade300, width: 1),
+                borderRadius: BorderRadius.circular(
+                  40,
+                ), // Bulat penuh (pill-shaped)
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(
+                      0,
+                      10,
+                    ), // Bayangan jatuh ke bawah ala iOS
                   ),
                 ],
               ),
@@ -126,7 +191,7 @@ class FavoritePage extends StatelessWidget {
                     'Favorite',
                     true,
                     3,
-                  ),
+                  ), // Index 3 Aktif
                   _buildBottomNavItem(
                     context,
                     Icons.person_outline,
@@ -143,111 +208,196 @@ class FavoritePage extends StatelessWidget {
     );
   }
 
+  // WIDGET KUSTOM: Chip Kategori 3R
+  Widget _buildCategoryChip(int index, String title) {
+    bool isSelected = _selectedCategoryIndex == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedCategoryIndex = index;
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? _primaryGreen : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? _primaryGreen : Colors.grey.shade300,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: _primaryGreen.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : [],
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.grey.shade600,
+            fontSize: 12,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
   // WIDGET KUSTOM: Kartu UMKM Favorit
-  Widget _buildFavoriteCard(
-    String name,
-    String tag,
-    String rating,
-    String imagePath,
-  ) {
-    // Mengecek apakah gambar dari internet atau folder Asset lokal
+  Widget _buildFavoriteCard({
+    required String name,
+    required String tag,
+    required IconData tagIcon,
+    required String rating,
+    required String distance,
+    required String imagePath,
+  }) {
     bool isNetworkImage = imagePath.startsWith('http');
 
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade200, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Row(
+      child: Stack(
         children: [
-          // Gambar UMKM (Otomatis mendeteksi network/asset)
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(15),
-              bottomLeft: Radius.circular(15),
-            ),
-            child: isNetworkImage
-                ? Image.network(
-                    imagePath,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  )
-                : Image.asset(
-                    imagePath,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-          ),
-          const SizedBox(width: 15),
-
-          // Info Detail
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(18),
+                  bottomLeft: Radius.circular(18),
                 ),
-                const SizedBox(height: 5),
-                // Tag 3R
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE5F2E6),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    tag,
-                    style: TextStyle(
-                      color: _primaryGreen,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      rating,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+                child: isNetworkImage
+                    ? Image.network(
+                        imagePath,
+                        width: 110,
+                        height: 120,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        imagePath,
+                        width: 110,
+                        height: 120,
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ],
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 5,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF0F7F0),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: const Color(0xFFC7DCC9)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(tagIcon, color: _primaryGreen, size: 12),
+                            const SizedBox(width: 4),
+                            Text(
+                              tag,
+                              style: TextStyle(
+                                color: _primaryGreen,
+                                fontSize: 9,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black87,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.star, color: Colors.amber, size: 16),
+                          const SizedBox(width: 4),
+                          Text(
+                            rating,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(
+                            Icons.circle,
+                            color: Colors.grey.shade400,
+                            size: 6,
+                          ),
+                          const SizedBox(width: 10),
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.grey.shade400,
+                            size: 14,
+                          ),
+                          const SizedBox(width: 2),
+                          Text(
+                            distance,
+                            style: TextStyle(
+                              color: Colors.grey.shade600,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 40),
+            ],
           ),
 
-          // Tombol Hapus dari Favorit
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
+          Positioned(
+            top: 5,
+            right: 5,
             child: IconButton(
-              icon: Icon(Icons.favorite, color: _primaryGreen, size: 28),
+              icon: Icon(Icons.favorite, color: Colors.red.shade400, size: 24),
               onPressed: () {
-                // Aksi menghapus dari favorit
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: const Text('Dihapus dari favorit'),
+                    duration: const Duration(seconds: 1),
+                    backgroundColor: _primaryGreen,
+                  ),
+                );
               },
             ),
           ),
@@ -308,7 +458,7 @@ class FavoritePage extends StatelessWidget {
               color: isSelected ? _primaryGreen : Colors.grey.shade400,
               size: 26,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 1),
             Text(
               label,
               style: TextStyle(
