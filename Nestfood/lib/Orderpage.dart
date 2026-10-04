@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'SearchPage.dart';
+import 'Favorite.dart';
 import 'AccountPage.dart';
 
 class OrderPage extends StatefulWidget {
@@ -15,287 +17,341 @@ class _OrderPageState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: const Color(0xFFF4F7F5),
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              bottom: 120,
-            ), // Area aman untuk Bottom Nav
+            padding: const EdgeInsets.only(bottom: 120),
             child: Column(
               children: [
-                // --- 1. HEADER PETA (MAPS) ---
+                // --- 1. HEADER PETA MELAYANG (ESTETIK) ---
                 Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    // Gambar Peta
                     Container(
-                      height: 260,
+                      height: 300,
                       width: double.infinity,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
                             'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80',
-                          ), // Ilustrasi Peta
+                          ),
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
-                    // Tombol Back
-                    Positioned(
-                      top: 50,
-                      left: 20,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                          icon: Icon(Icons.arrow_back, color: _primaryGreen),
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          },
+                      // Efek gradasi agar tulisan di atas map terlihat jelas
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.4),
+                              Colors.transparent,
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    // Marker Pin Lokasi
                     Positioned(
-                      top: 100,
-                      left: MediaQuery.of(context).size.width / 2 - 20,
+                      top: 55,
+                      left: 20,
+                      right: 20,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 22,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: _primaryGreen,
+                                size: 20,
+                              ),
+                              onPressed: () => Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomePage(),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'Lacak Pesanan',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Marker Map
+                    Positioned(
+                      top: 130,
+                      left: MediaQuery.of(context).size.width / 2 - 25,
                       child: Icon(
                         Icons.location_on,
                         color: _primaryGreen,
-                        size: 45,
+                        size: 50,
                       ),
                     ),
                   ],
                 ),
 
-                // --- 2. KARTU STATUS PESANAN (TIMELINE) ---
-                Container(
-                  transform: Matrix4.translationValues(0.0, -30.0, 0.0),
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                // --- 2. KARTU STATUS (TIMELINE) ---
+                Transform.translate(
+                  offset: const Offset(
+                    0,
+                    -40,
+                  ), // Kartu melayang naik menimpa peta
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.06),
+                            blurRadius: 20,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Estimasi Tiba',
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '12:45 PM',
-                                style: TextStyle(
-                                  color: _primaryGreen,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.orange.shade100,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              'Di Jalan',
-                              style: TextStyle(
-                                color: Colors.orange.shade800,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        child: Divider(),
-                      ),
-                      // Timeline Ikon
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildTimelineIcon(Icons.receipt_long, true),
-                          _buildTimelineLine(true),
-                          _buildTimelineIcon(Icons.soup_kitchen, true),
-                          _buildTimelineLine(true),
-                          _buildTimelineIcon(
-                            Icons.delivery_dining,
-                            true,
-                          ), // Aktif
-                          _buildTimelineLine(false),
-                          _buildTimelineIcon(Icons.home, false),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Driver sedang mengantar pesananmu (2.3 KM)',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade700,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // --- 3. KARTU DRIVER & CHAT ---
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.grey.shade200),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 25,
-                              backgroundImage: const NetworkImage(
-                                'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&q=80',
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
-                                    'Budi Santoso',
+                                  Text(
+                                    'Estimasi Tiba',
                                     style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey.shade500,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    'Honda Vario • B 1234 XYZ',
+                                    '12:45 PM',
                                     style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade600,
+                                      color: _primaryGreen,
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: const [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 14,
-                                  ),
-                                  SizedBox(width: 4),
-                                  Text(
-                                    '4.9',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton.icon(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.chat_bubble_outline,
-                                  size: 18,
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
                                 ),
-                                label: const Text('Chat Driver'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: _primaryGreen,
-                                  foregroundColor: Colors.white,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 12,
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.shade50,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'Di Jalan',
+                                  style: TextStyle(
+                                    color: Colors.orange.shade700,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Divider(height: 1),
+                          ),
+                          // Custom Stepper/Timeline
+                          Row(
+                            children: [
+                              _buildStepIcon(Icons.receipt_long, true),
+                              _buildStepLine(true),
+                              _buildStepIcon(Icons.soup_kitchen, true),
+                              _buildStepLine(true),
+                              _buildStepIcon(Icons.delivery_dining, true),
+                              _buildStepLine(false), // Driver aktif
+                              _buildStepIcon(Icons.home, false),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            'Mitra sedang dalam perjalanan (2.3 KM)',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.grey.shade700,
+                              fontWeight: FontWeight.w600,
                             ),
-                            const SizedBox(width: 10),
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: _primaryGreen),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.phone,
-                                  color: _primaryGreen,
-                                  size: 20,
-                                ),
-                                onPressed: () {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                // --- 3. KARTU DRIVER ---
+                Transform.translate(
+                  offset: const Offset(0, -20),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Colors.grey.shade200,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 28,
+                                backgroundImage: const NetworkImage(
+                                  'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=150&q=80',
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Budi Santoso',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w800,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Honda Vario • B 1234 XYZ',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey.shade600,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.shade50,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                      size: 16,
+                                    ),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      '4.9',
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ElevatedButton.icon(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.chat_bubble_outline,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Chat Driver'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: _primaryGreen,
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: _primaryGreen,
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.phone,
+                                    color: _primaryGreen,
+                                    size: 22,
+                                  ),
+                                  onPressed: () {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
 
-                // --- 4. FITUR VENTURE CREATION (Dampak 3R) ---
+                // --- 4. VENTURE CREATION FEATURE (ECO-IMPACT) ---
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF0F7F0), // Background hijau pudar
+                      color: const Color(
+                        0xFFF0F7F0,
+                      ), // Latar belakang hijau estetik
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFFC7DCC9)),
+                      border: Border.all(
+                        color: const Color(0xFFC7DCC9),
+                        width: 1.5,
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,71 +361,80 @@ class _OrderPageState extends State<OrderPage> {
                             const Text('🌱', style: TextStyle(fontSize: 22)),
                             const SizedBox(width: 10),
                             Text(
-                              'Dampak Lingkungan Pesanan Ini',
+                              'Dampak 3R Pesanan Ini',
                               style: TextStyle(
                                 color: _primaryGreen,
-                                fontSize: 14,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w900,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 15),
-
-                        // Refuse & Upcycle Info
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.block,
-                              color: Colors.red.shade400,
-                              size: 18,
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade50,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.block,
+                                color: Colors.red.shade400,
+                                size: 16,
+                              ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Text(
                                 'Refuse: Kamu menghemat 2 alat makan plastik sekali pakai.',
                                 style: TextStyle(
-                                  color: Colors.black87,
+                                  color: Colors.grey.shade800,
                                   fontSize: 12,
-                                  height: 1.4,
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.recycling,
-                              color: _primaryGreen,
-                              size: 18,
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.green.shade50,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.recycling,
+                                color: _primaryGreen,
+                                size: 16,
+                              ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                'Recycle: UMKM menggunakan rantang/wadah reusable untuk pesananmu.',
+                                'Recycle: UMKM ini menggunakan wadah reusable untuk pesananmu.',
                                 style: TextStyle(
-                                  color: Colors.black87,
+                                  color: Colors.grey.shade800,
                                   fontSize: 12,
-                                  height: 1.4,
+                                  height: 1.5,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 15),
-
-                        // Tombol Aksi Recycle (Tukar Wadah)
+                        const SizedBox(height: 20),
                         SizedBox(
                           width: double.infinity,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                              // Aksi ketika user ingin mengembalikan wadah
-                              _showRecycleDialog(context);
-                            },
+                            onPressed: () => _showRecycleDialog(context),
                             icon: Icon(
                               Icons.sync_alt,
                               color: _primaryGreen,
@@ -383,16 +448,17 @@ class _OrderPageState extends State<OrderPage> {
                                 width: 1.5,
                               ),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor: Colors.white,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                         const Center(
                           child: Text(
-                            '*Kembalikan wadah untuk mendapatkan +50 Poin Eco',
+                            '*Dapatkan +50 Poin Eco setelah penjemputan',
                             style: TextStyle(
                               fontSize: 10,
                               color: Colors.grey,
@@ -408,22 +474,21 @@ class _OrderPageState extends State<OrderPage> {
             ),
           ),
 
-          // --- 5. BOTTOM NAVIGATION BAR MENGAMBANG ---
+          // --- BOTTOM NAVIGATION BAR KONSISTEN ---
           Positioned(
-            bottom: 20,
+            bottom: 30,
             left: 20,
             right: 20,
             child: Container(
-              height: 70,
+              height: 65,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(35),
-                border: Border.all(color: Colors.grey.shade300, width: 1),
+                borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
@@ -450,7 +515,7 @@ class _OrderPageState extends State<OrderPage> {
                     'Pesanan',
                     true,
                     2,
-                  ), // Index 2 (Pesanan) Menyala!
+                  ), // Aktif
                   _buildBottomNavItem(
                     context,
                     Icons.favorite_border,
@@ -474,32 +539,45 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  // Komponen Timeline Progress
-  Widget _buildTimelineIcon(IconData icon, bool isActive) {
+  // Desain Ikon Timeline Bulat
+  Widget _buildStepIcon(IconData icon, bool isActive) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: isActive ? _primaryGreen : Colors.grey.shade200,
         shape: BoxShape.circle,
+        boxShadow: isActive
+            ? [
+                BoxShadow(
+                  color: _primaryGreen.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ]
+            : [],
       ),
       child: Icon(
         icon,
         color: isActive ? Colors.white : Colors.grey.shade400,
-        size: 18,
+        size: 20,
       ),
     );
   }
 
-  Widget _buildTimelineLine(bool isActive) {
+  // Garis Penghubung Timeline
+  Widget _buildStepLine(bool isActive) {
     return Expanded(
       child: Container(
         height: 3,
-        color: isActive ? _primaryGreen : Colors.grey.shade200,
+        decoration: BoxDecoration(
+          color: isActive ? _primaryGreen : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(5),
+        ),
       ),
     );
   }
 
-  // WIDGET KUSTOM: Bottom Navigation Item
+  // WIDGET NAVIGASI UNIVERSAL
   Widget _buildBottomNavItem(
     BuildContext context,
     IconData icon,
@@ -509,17 +587,34 @@ class _OrderPageState extends State<OrderPage> {
   ) {
     return GestureDetector(
       onTap: () {
-        if (index == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
-        } else if (index == 4) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const AccountPage()),
-          );
+        if (isSelected) return;
+        Widget nextScreen;
+        switch (index) {
+          case 0:
+            nextScreen = const HomePage();
+            break;
+          case 1:
+            nextScreen = const SearchPage();
+            break;
+          case 2:
+            return; // Sudah di Pesanan
+          case 3:
+            nextScreen = const FavoritePage();
+            break;
+          case 4:
+            nextScreen = const AccountPage();
+            break;
+          default:
+            return;
         }
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (_, __, ___) => nextScreen,
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
       },
       child: Container(
         color: Colors.transparent,
@@ -529,16 +624,16 @@ class _OrderPageState extends State<OrderPage> {
           children: [
             Icon(
               icon,
-              color: isSelected ? _primaryGreen : Colors.grey.shade500,
+              color: isSelected ? _primaryGreen : Colors.grey.shade400,
               size: 26,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? _primaryGreen : Colors.grey.shade500,
+                color: isSelected ? _primaryGreen : Colors.grey.shade400,
                 fontSize: 10,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
               ),
             ),
           ],
@@ -547,53 +642,71 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  // Fungsi Popup (Dialog) Ketika tombol Jadwalkan Pengembalian ditekan
+  // Fungsi Dialog Pop-Up Jadwal Penjemputan Wadah
   void _showRecycleDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(25),
           ),
           title: Row(
             children: [
-              Icon(Icons.recycling, color: _primaryGreen),
-              const SizedBox(width: 10),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0F7F0),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.recycling, color: _primaryGreen, size: 20),
+              ),
+              const SizedBox(width: 12),
               const Text(
-                'Jadwalkan Penjemputan',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                'Penjemputan',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900),
               ),
             ],
           ),
           content: const Text(
-            'Setelah kamu selesai makan, kurir/mitra bank sampah akan menjemput wadah reusable ini ke lokasimu.\n\nKamu akan mendapatkan +50 Poin Eco!',
-            style: TextStyle(fontSize: 13, height: 1.4),
+            'Setelah kamu selesai makan, mitra bank sampah akan menjemput wadah reusable ini.\n\nSetiap pengembalian bernilai +50 Poin Eco!',
+            style: TextStyle(fontSize: 13, height: 1.5, color: Colors.black87),
           ),
           actions: [
             TextButton(
               child: Text(
-                'Nanti Saja',
-                style: TextStyle(color: Colors.grey.shade600),
+                'Nanti',
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryGreen,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
                 ),
               ),
               child: const Text(
                 'Jadwalkan Sekarang',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Penjemputan wadah berhasil dijadwalkan!'),
+                    content: Text('Jadwal penjemputan wadah berhasil diatur!'),
+                    backgroundColor: Color(0xFF38683A),
                   ),
                 );
               },

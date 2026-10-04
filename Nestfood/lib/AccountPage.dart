@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
-import 'HomePage.dart'; // Menghubungkan ke Beranda
-import 'Login.dart'; // Menghubungkan ke Halaman Login
+import 'HomePage.dart';
+import 'SearchPage.dart';
+import 'OrderPage.dart';
+import 'Favorite.dart';
 
-class AccountPage extends StatelessWidget {
+// import 'Login.dart'; // Aktifkan ini jika file Login.dart Anda sudah siap
+
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
-  // Warna hijau utama Nest Food
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   final Color _primaryGreen = const Color(0xFF38683A);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF9FAFB,
-      ), // Latar belakang abu-abu sangat muda
+      backgroundColor: const Color(0xFFF9FAFB),
       body: Stack(
         children: [
-          // --- 1. AREA KONTEN (Bisa di-scroll) ---
+          // --- 1. KONTEN UTAMA ---
           SingleChildScrollView(
-            // Padding bawah ditambahkan agar konten paling bawah
-            // tidak tertutup oleh navigasi melayang
-            padding: const EdgeInsets.only(bottom: 130),
+            padding: const EdgeInsets.only(
+              bottom: 120,
+            ), // Jarak aman untuk Bottom Nav
             child: Column(
               children: [
-                // Header Profil Hijau
+                // --- HEADER PROFIL (HIJAU) ---
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(
-                    top: 70, // Menghindari status bar (jam/baterai)
-                    bottom: 40,
-                    left: 30,
-                    right: 30,
+                    top: 70,
+                    bottom:
+                        60, // Padding bawah lebih besar untuk ruang kartu melayang
+                    left: 24,
+                    right: 24,
                   ),
                   decoration: BoxDecoration(
                     color: _primaryGreen,
@@ -41,13 +48,19 @@ class AccountPage extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      // Foto Profil
+                      // Foto Profil dengan border putih
                       Container(
-                        width: 80,
-                        height: 80,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFF9F6E8), // Warna krem estetik
+                        width: 75,
+                        height: 75,
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2.5),
+                          image: const DecorationImage(
+                            image: NetworkImage(
+                              'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+                            ),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -56,162 +69,274 @@ class AccountPage extends StatelessWidget {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               'EDWARD',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.0,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.5,
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 4),
                             Text(
-                              'EDWARD@GMAIL.COM',
+                              'edward@gmail.com',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5,
+                                color: Colors.white.withOpacity(0.85),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            // Badge Member
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                'Eco-Member Gold',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
+
+                      // Tombol Edit Profil
+                      IconButton(
+                        icon: const Icon(
+                          Icons.edit_square,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        onPressed: () {},
+                      ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 35),
-
-                // Kartu Daftar Menu Profil
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                // --- KARTU STATISTIK ECO (Melayang menimpa header) ---
+                Transform.translate(
+                  offset: const Offset(0, -35),
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.grey.shade200,
-                        width: 1.2,
-                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
+                          color: Colors.black.withOpacity(0.06),
                           blurRadius: 15,
-                          offset: const Offset(0, 5),
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildMenuItem(
-                          Icons.receipt_long_outlined,
-                          'Pesanan Saya',
-                          true,
+                        _buildEcoStat(
+                          '12',
+                          'Plastik\nDitolak',
+                          Icons.block,
+                          Colors.red.shade400,
                         ),
-                        _buildMenuItem(
-                          Icons.location_on_outlined,
-                          'Alamat Saya',
-                          true,
+                        Container(
+                          width: 1,
+                          height: 40,
+                          color: Colors.grey.shade200,
                         ),
-                        _buildMenuItem(
-                          Icons.credit_card_outlined,
-                          'Metode pembayaran',
-                          true,
+                        _buildEcoStat(
+                          '5',
+                          'Wadah\nDikembalikan',
+                          Icons.recycling,
+                          _primaryGreen,
                         ),
-                        _buildMenuItem(
-                          Icons.settings_outlined,
-                          'Pengaturan',
-                          true,
+                        Container(
+                          width: 1,
+                          height: 40,
+                          color: Colors.grey.shade200,
                         ),
-                        _buildMenuItem(
-                          Icons.help_outline,
-                          'Pusat bantuan',
-                          true,
-                        ),
-                        _buildMenuItem(
-                          Icons.info_outline,
-                          'Tentang Nestfood',
-                          false,
+                        _buildEcoStat(
+                          '450',
+                          'Poin Eco\nTerkumpul',
+                          Icons.stars,
+                          Colors.amber.shade600,
                         ),
                       ],
                     ),
                   ),
                 ),
 
-                // Jarak diperbesar agar tombol Keluar posisinya semakin "turun"
-                const SizedBox(height: 80),
-
-                // Tombol Keluar (Logout)
+                // --- MENU LIST ---
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Menghapus riwayat layar dan memaksa kembali ke Login
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Kategori: Aktivitas 3R
+                      const Text(
+                        'Aktivitas 3R & Pesanan',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black87,
                         ),
-                        (Route<dynamic> route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _primaryGreen,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(double.infinity, 55),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          25,
-                        ), // Ujung lebih membulat
                       ),
-                      elevation: 0,
-                    ),
-                    child: const Text(
-                      'Keluar',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                      const SizedBox(height: 12),
+                      _buildMenuGroup([
+                        _buildMenuItem(
+                          Icons.receipt_long,
+                          'Riwayat Pesanan',
+                          true,
+                        ),
+                        _buildMenuItem(
+                          Icons.compost,
+                          'Voucher Upcycle & Promo',
+                          true,
+                        ),
+                        _buildMenuItem(
+                          Icons.sync_alt,
+                          'Jadwal Jemput Wadah',
+                          false,
+                        ),
+                      ]),
+
+                      const SizedBox(height: 25),
+
+                      // Kategori: Pengaturan Akun
+                      const Text(
+                        'Pengaturan Akun',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black87,
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      _buildMenuGroup([
+                        _buildMenuItem(
+                          Icons.location_on_outlined,
+                          'Alamat Tersimpan',
+                          true,
+                        ),
+                        _buildMenuItem(
+                          Icons.credit_card_outlined,
+                          'Metode Pembayaran',
+                          true,
+                        ),
+                        _buildMenuItem(
+                          Icons.notifications_outlined,
+                          'Notifikasi',
+                          false,
+                        ),
+                      ]),
+
+                      const SizedBox(height: 25),
+
+                      // Kategori: Bantuan
+                      _buildMenuGroup([
+                        _buildMenuItem(
+                          Icons.help_outline,
+                          'Pusat Bantuan',
+                          true,
+                        ),
+                        _buildMenuItem(
+                          Icons.info_outline,
+                          'Tentang Nest Food (3R)',
+                          false,
+                        ),
+                      ]),
+
+                      const SizedBox(height: 35),
+
+                      // Tombol Keluar (Logout)
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            // Aksi Logout: Kembali ke halaman Login (jika ada)
+                            // Navigator.pushAndRemoveUntil(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => const LoginPage()),
+                            //   (route) => false,
+                            // );
+                          },
+                          icon: Icon(
+                            Icons.logout,
+                            color: Colors.red.shade400,
+                            size: 20,
+                          ),
+                          label: Text(
+                            'Keluar',
+                            style: TextStyle(
+                              color: Colors.red.shade400,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            side: BorderSide(
+                              color: Colors.red.shade200,
+                              width: 1.5,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            backgroundColor:
+                                Colors.red.shade50, // Latar merah sangat pudar
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
 
-          // --- 2. BOTTOM NAVIGATION BAR (FLOATING ALA IOS) ---
+          // --- 2. BOTTOM NAVIGATION BAR MENGAMBANG (KONSISTEN) ---
           Positioned(
-            bottom:
-                15, // Dibuat lebih kecil agar posisinya semakin turun ke bawah layar
+            bottom: 30, // Posisi persis sama dengan halaman lain
             left: 20,
             right: 20,
             child: Container(
               height: 65,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  40,
-                ), // Kapsul membulat penuh
+                borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
                     blurRadius: 20,
-                    offset: const Offset(0, 10), // Bayangan jatuh ke bawah
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Navigasi Ikon
-                  _buildBottomNavItem(context, Icons.home, 'Home', false, 0),
                   _buildBottomNavItem(
                     context,
-                    Icons.search,
+                    Icons.home_outlined,
+                    'Home',
+                    false,
+                    0,
+                  ),
+                  _buildBottomNavItem(
+                    context,
+                    Icons.search_outlined,
                     'Search',
                     false,
                     1,
@@ -225,7 +350,7 @@ class AccountPage extends StatelessWidget {
                   ),
                   _buildBottomNavItem(
                     context,
-                    Icons.favorite,
+                    Icons.favorite_border,
                     'Favorite',
                     false,
                     3,
@@ -236,7 +361,7 @@ class AccountPage extends StatelessWidget {
                     'Account',
                     true,
                     4,
-                  ), // Account (Aktif)
+                  ), // Index 4 Aktif (Menyala)
                 ],
               ),
             ),
@@ -246,7 +371,50 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  // Widget Kustom: Baris Menu
+  // WIDGET KUSTOM: Info Statistik Eco (Dalam Kartu Melayang)
+  Widget _buildEcoStat(String value, String label, IconData icon, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 22),
+        const SizedBox(height: 6),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 10,
+            color: Colors.grey.shade600,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // WIDGET KUSTOM: Wadah Kotak Putih untuk Grup Menu
+  Widget _buildMenuGroup(List<Widget> items) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey.shade200, width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(children: items),
+    );
+  }
+
+  // WIDGET KUSTOM: Baris Menu Individual
   Widget _buildMenuItem(IconData icon, String title, bool showDivider) {
     return Column(
       children: [
@@ -254,21 +422,35 @@ class AccountPage extends StatelessWidget {
           onTap: () {},
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 16.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             child: Row(
               children: [
-                Icon(icon, color: _primaryGreen, size: 26),
-                const SizedBox(width: 18),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black87,
+                // Kotak Ikon
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFF0F7F0), // Hijau sangat pudar
+                    shape: BoxShape.circle,
                   ),
+                  child: Icon(icon, color: _primaryGreen, size: 20),
+                ),
+                const SizedBox(width: 15),
+                // Judul
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+                // Panah Kanan
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 14,
+                  color: Colors.grey.shade400,
                 ),
               ],
             ),
@@ -276,18 +458,18 @@ class AccountPage extends StatelessWidget {
         ),
         if (showDivider)
           Padding(
-            padding: const EdgeInsets.only(left: 64, right: 20),
+            padding: const EdgeInsets.only(left: 55, right: 16),
             child: Divider(
               height: 1,
               thickness: 1,
-              color: Colors.grey.shade200,
+              color: Colors.grey.shade100,
             ),
           ),
       ],
     );
   }
 
-  // Widget Kustom: Navigasi Bawah
+  // WIDGET NAVIGASI UNIVERSAL (Konsisten)
   Widget _buildBottomNavItem(
     BuildContext context,
     IconData icon,
@@ -297,16 +479,39 @@ class AccountPage extends StatelessWidget {
   ) {
     return GestureDetector(
       onTap: () {
-        // Logika berpindah ke HomePage jika ikon Home ditekan
-        if (index == 0) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
-          );
+        if (isSelected) return;
+
+        Widget nextScreen;
+        switch (index) {
+          case 0:
+            nextScreen = const HomePage();
+            break;
+          case 1:
+            nextScreen = const SearchPage();
+            break;
+          case 2:
+            nextScreen = const OrderPage();
+            break;
+          case 3:
+            nextScreen = const FavoritePage();
+            break;
+          case 4:
+            return; // Sudah di halaman Account
+          default:
+            return;
         }
+
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => nextScreen,
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
       },
       child: Container(
-        color: Colors.transparent, // Area sentuh diperluas
+        color: Colors.transparent,
         width: 60,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

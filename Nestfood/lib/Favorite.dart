@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'SearchPage.dart';
 import 'OrderPage.dart';
 import 'AccountPage.dart';
 
@@ -12,8 +13,6 @@ class FavoritePage extends StatefulWidget {
 
 class _FavoritePageState extends State<FavoritePage> {
   final Color _primaryGreen = const Color(0xFF38683A);
-
-  // State untuk filter kategori aktif
   int _selectedCategoryIndex = 0;
   final List<String> _categories = [
     'Semua',
@@ -25,39 +24,29 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
+      backgroundColor: const Color(0xFFF4F7F5), // Warna latar lebih sejuk
       body: Stack(
         children: [
-          // --- 1. KONTEN UTAMA ---
           SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              bottom: 120,
-            ), // Jarak aman agar konten bawah tidak tertutup nav bar
+            padding: const EdgeInsets.only(bottom: 120),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // --- HEADER HIJAU EKSKLUSIF ---
+                // --- HEADER EKSKLUSIF ---
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(
-                    top: 60,
-                    bottom: 30,
+                    top: 65,
+                    bottom: 35,
                     left: 24,
                     right: 24,
                   ),
                   decoration: BoxDecoration(
                     color: _primaryGreen,
                     borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
+                      bottomLeft: Radius.circular(35),
+                      bottomRight: Radius.circular(35),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: _primaryGreen.withOpacity(0.3),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,17 +55,19 @@ class _FavoritePageState extends State<FavoritePage> {
                         'UMKM Favoritmu',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 24,
+                          fontSize: 26,
                           fontWeight: FontWeight.w900,
+                          letterSpacing: -0.5,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 10),
                       Text(
                         'Pahlawan Bumi! Pilihan makananmu sangat membantu mengurangi sampah lingkungan. 🌱',
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.9),
                           fontSize: 13,
                           height: 1.4,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
@@ -85,7 +76,7 @@ class _FavoritePageState extends State<FavoritePage> {
 
                 const SizedBox(height: 25),
 
-                // --- FILTER KATEGORI 3R ---
+                // --- FILTER KATEGORI (CHIPS) ---
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -98,38 +89,39 @@ class _FavoritePageState extends State<FavoritePage> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
 
-                // --- DAFTAR KARTU FAVORIT ---
+                // --- DAFTAR KARTU FAVORIT ESTETIK ---
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
-                      _buildFavoriteCard(
+                      _buildAestheticFavoriteCard(
                         name: 'Bakso ojo lali',
                         tag: 'Recycle (Wadah Reusable)',
                         tagIcon: Icons.recycling,
                         rating: '4.7',
                         distance: '2.3 KM',
-                        imagePath: 'Asset/Image/BaksoBiasa.png', // Aset Lokal
+                        imagePath: 'Asset/Image/BaksoBiasa.png',
                       ),
-                      const SizedBox(height: 16),
-                      _buildFavoriteCard(
+                      const SizedBox(height: 18),
+                      _buildAestheticFavoriteCard(
                         name: 'Sate ayam bang jamal',
                         tag: 'Refuse (Tanpa Plastik)',
                         tagIcon: Icons.block,
                         rating: '4.6',
                         distance: '4.3 KM',
-                        imagePath: 'Asset/Image/Sate.png', // Aset Lokal
+                        imagePath: 'Asset/Image/Sate.png',
                       ),
-                      const SizedBox(height: 16),
-                      _buildFavoriteCard(
+                      const SizedBox(height: 18),
+                      _buildAestheticFavoriteCard(
                         name: 'Seblak Harkit',
                         tag: 'Upcycle (Ampas Organik)',
                         tagIcon: Icons.compost,
                         rating: '4.8',
                         distance: '5.3 KM',
-                        imagePath: 'Asset/Image/Seblak.png', // Aset Lokal
+                        imagePath:
+                            'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=300&q=80',
                       ),
                     ],
                   ),
@@ -138,26 +130,21 @@ class _FavoritePageState extends State<FavoritePage> {
             ),
           ),
 
-          // --- 2. BOTTOM NAVIGATION BAR MENGAMBANG (UKURAN 100% KONSISTEN ALA IOS) ---
+          // --- BOTTOM NAVIGATION BAR KONSISTEN ---
           Positioned(
-            bottom: 15, // Disamakan persis dengan halaman lain
+            bottom: 30,
             left: 20,
             right: 20,
             child: Container(
-              height: 70, // Disamakan tinggi kapsulnya
+              height: 65,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  40,
-                ), // Bulat penuh (pill-shaped)
+                borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withOpacity(0.08),
                     blurRadius: 20,
-                    offset: const Offset(
-                      0,
-                      10,
-                    ), // Bayangan jatuh ke bawah ala iOS
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
@@ -191,7 +178,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     'Favorite',
                     true,
                     3,
-                  ), // Index 3 Aktif
+                  ), // Aktif
                   _buildBottomNavItem(
                     context,
                     Icons.person_outline,
@@ -208,30 +195,27 @@ class _FavoritePageState extends State<FavoritePage> {
     );
   }
 
-  // WIDGET KUSTOM: Chip Kategori 3R
+  // Desain Chip yang Lebih Lembut
   Widget _buildCategoryChip(int index, String title) {
     bool isSelected = _selectedCategoryIndex == index;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedCategoryIndex = index;
-        });
-      },
+      onTap: () => setState(() => _selectedCategoryIndex = index),
       child: Container(
-        margin: const EdgeInsets.only(right: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
         decoration: BoxDecoration(
           color: isSelected ? _primaryGreen : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: isSelected ? _primaryGreen : Colors.grey.shade300,
+            color: isSelected ? _primaryGreen : Colors.grey.shade200,
+            width: 1.5,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
                     color: _primaryGreen.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : [],
@@ -239,7 +223,7 @@ class _FavoritePageState extends State<FavoritePage> {
         child: Text(
           title,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey.shade600,
+            color: isSelected ? Colors.white : Colors.grey.shade700,
             fontSize: 12,
             fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
           ),
@@ -248,8 +232,8 @@ class _FavoritePageState extends State<FavoritePage> {
     );
   }
 
-  // WIDGET KUSTOM: Kartu UMKM Favorit
-  Widget _buildFavoriteCard({
+  // Desain Kartu Favorit Modern (Ikon Hati Melayang di Gambar)
+  Widget _buildAestheticFavoriteCard({
     required String name,
     required String tag,
     required IconData tagIcon,
@@ -263,142 +247,130 @@ class _FavoritePageState extends State<FavoritePage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.grey.shade200, width: 1.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
-            blurRadius: 15,
+            blurRadius: 20,
             offset: const Offset(0, 8),
           ),
         ],
       ),
-      child: Stack(
+      child: Column(
         children: [
-          Row(
+          // Bagian Gambar
+          Stack(
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18),
-                  bottomLeft: Radius.circular(18),
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
                 ),
                 child: isNetworkImage
                     ? Image.network(
                         imagePath,
-                        width: 110,
-                        height: 120,
+                        width: double.infinity,
+                        height: 140,
                         fit: BoxFit.cover,
                       )
                     : Image.asset(
                         imagePath,
-                        width: 110,
-                        height: 120,
+                        width: double.infinity,
+                        height: 140,
                         fit: BoxFit.cover,
                       ),
               ),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 5,
+              // Ikon Hati Melayang
+              Positioned(
+                top: 12,
+                right: 12,
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 18,
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.red.shade400,
+                    size: 20,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ),
+              // Tag Eco-Friendly Melayang
+              Positioned(
+                bottom: 12,
+                left: 12,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.95),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF0F7F0),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: const Color(0xFFC7DCC9)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(tagIcon, color: _primaryGreen, size: 12),
-                            const SizedBox(width: 4),
-                            Text(
-                              tag,
-                              style: TextStyle(
-                                color: _primaryGreen,
-                                fontSize: 9,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
+                      Icon(tagIcon, color: _primaryGreen, size: 14),
+                      const SizedBox(width: 4),
                       Text(
-                        name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.black87,
+                        tag,
+                        style: TextStyle(
+                          color: _primaryGreen,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 16),
-                          const SizedBox(width: 4),
-                          Text(
-                            rating,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.circle,
-                            color: Colors.grey.shade400,
-                            size: 6,
-                          ),
-                          const SizedBox(width: 10),
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.grey.shade400,
-                            size: 14,
-                          ),
-                          const SizedBox(width: 2),
-                          Text(
-                            distance,
-                            style: TextStyle(
-                              color: Colors.grey.shade600,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(width: 40),
             ],
           ),
-
-          Positioned(
-            top: 5,
-            right: 5,
-            child: IconButton(
-              icon: Icon(Icons.favorite, color: Colors.red.shade400, size: 24),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: const Text('Dihapus dari favorit'),
-                    duration: const Duration(seconds: 1),
-                    backgroundColor: _primaryGreen,
+          // Bagian Teks & Info Bawah
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.black87,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                );
-              },
+                ),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber, size: 18),
+                    const SizedBox(width: 4),
+                    Text(
+                      rating,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.grey.shade400,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      distance,
+                      style: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
@@ -417,31 +389,29 @@ class _FavoritePageState extends State<FavoritePage> {
     return GestureDetector(
       onTap: () {
         if (isSelected) return;
-
         Widget nextScreen;
         switch (index) {
           case 0:
             nextScreen = const HomePage();
             break;
           case 1:
-            return; // Halaman Search
+            nextScreen = const SearchPage();
+            break;
           case 2:
             nextScreen = const OrderPage();
             break;
           case 3:
-            nextScreen = const FavoritePage();
-            break;
+            return; // Sudah di Favorite
           case 4:
             nextScreen = const AccountPage();
             break;
           default:
             return;
         }
-
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => nextScreen,
+            pageBuilder: (_, __, ___) => nextScreen,
             transitionDuration: Duration.zero,
             reverseTransitionDuration: Duration.zero,
           ),
@@ -458,7 +428,7 @@ class _FavoritePageState extends State<FavoritePage> {
               color: isSelected ? _primaryGreen : Colors.grey.shade400,
               size: 26,
             ),
-            const SizedBox(height: 1),
+            const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'AccountPage.dart';
 import 'MenuPage.dart';
-import 'CartPage.dart'; // <--- PASTIKAN IMPORT INI DITAMBAHKAN
-import 'Orderpage.dart';
-import 'Favorite.dart';
-import 'SearchPage.dart'; // Tambahkan ini di atas HomePage.dart, AccountPage.dart, dll
+import 'CartPage.dart';
+import 'OrderPage.dart'; // Pastikan nama file Anda OrderPage.dart atau Orderpage.dart
+import 'Favorite.dart'; // Pastikan nama file Anda FavoritePage.dart atau Favorite.dart
+import 'SearchPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   final Color _primaryGreen = const Color(0xFF38683A);
-  int _selectedIndex = 0;
+  final int _selectedIndex = 0;
 
-  // Data makanan
+  // Data Makanan (DIpertahankan 100% sama)
   final List<Map<String, dynamic>> _foodItems = [
     {
       'name': 'Bakso ojo lali',
@@ -115,176 +114,215 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(
+        0xFFF9FAFB,
+      ), // Latar sedikit keabuan agar desain putih menonjol
       body: Stack(
         children: [
+          // --- KONTEN UTAMA ---
           SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 120), // Ruang untuk Nav Bar
             child: Column(
               children: [
-                // --- HEADER HIJAU LENGKUNG ---
-                Container(
-                  padding: const EdgeInsets.only(
-                    top: 50,
-                    left: 20,
-                    right: 20,
-                    bottom: 25,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _primaryGreen,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      // Lokasi, Keranjang, & Notifikasi
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // --- 1. HEADER HIJAU & PENCARIAN MELAYANG ---
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 60,
+                        left: 24,
+                        right: 24,
+                        bottom: 45,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _primaryGreen,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(35),
+                          bottomRight: Radius.circular(35),
+                        ),
+                      ),
+                      child: Column(
                         children: [
+                          // Lokasi, Keranjang, & Notifikasi
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              const SizedBox(width: 8),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
-                                  Text(
-                                    'Lokasi kamu',
-                                    style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 11,
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                      size: 22,
                                     ),
                                   ),
-                                  Text(
-                                    'Alam Sutera, Tangerang Selatan',
-                                    style: TextStyle(
+                                  const SizedBox(width: 12),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: const [
+                                      Text(
+                                        'Lokasi kamu',
+                                        style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 11,
+                                        ),
+                                      ),
+                                      SizedBox(height: 2),
+                                      Text(
+                                        'Alam Sutera, Tangerang',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.shopping_cart_outlined,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
+                                      size: 26,
                                     ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CartPage(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  const Icon(
+                                    Icons.notifications,
+                                    color: Colors.white,
+                                    size: 26,
                                   ),
                                 ],
                               ),
                             ],
                           ),
-                          // --- IKON KERANJANG DAN NOTIFIKASI ---
-                          Row(
-                            children: [
-                              // Tombol Keranjang (Cart)
-                              IconButton(
-                                icon: const Icon(
-                                  Icons
-                                      .shopping_cart_outlined, // Icon keranjang
-                                  color: Colors.white,
-                                  size: 26,
-                                ),
-                                onPressed: () {
-                                  // Navigasi ke CartPage saat ditekan
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const CartPage(),
-                                    ),
-                                  );
-                                },
-                              ),
-                              const Icon(
-                                Icons.notifications,
-                                color: Colors.white,
-                                size: 28,
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+
+                    // KOTAK PENCARIAN MELAYANG (Berpindah otomatis ke SearchPage)
+                    Positioned(
+                      bottom: -25,
+                      left: 24,
+                      right: 24,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (_, __, ___) => const SearchPage(),
+                              transitionDuration: Duration.zero,
+                            ),
+                          );
+                        },
+                        child: Container(
+                          height: 55,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 15,
+                                offset: const Offset(0, 5),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Kolom Pencarian
-                      Container(
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Cari makanan',
-                            hintStyle: const TextStyle(
-                              color: Colors.black87,
-                              fontSize: 14,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 14,
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.search,
-                              color: Colors.black87,
-                            ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                color: Colors.grey.shade400,
+                                size: 24,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                'Cari makanan eco-friendly...',
+                                style: TextStyle(
+                                  color: Colors.grey.shade400,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: const BoxDecoration(
+                                  color: Color(0xFFE5F2E6),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.tune,
+                                  color: _primaryGreen,
+                                  size: 18,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
+                const SizedBox(height: 50), // Ruang karena search bar melayang
+                // --- 2. KONTEN BODY (Banners, Menu, dll) ---
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 25.0,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // --- BANNER 1 ---
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 248, 248, 248),
-                            width: 2,
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(13),
-                          child: Image.asset(
-                            'Asset/Image/Banner.png',
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
+                      // Banner 1
+                      _buildAestheticBanner('Asset/Image/Banner.png'),
 
-                      // --- MENU 3R ---
+                      const SizedBox(height: 25),
+
+                      // Menu 3R dengan Box Mewah
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _build3RMenu('Asset/Image/Foodbox.png', 'Refuse'),
-                          _build3RMenu('Asset/Image/Rec.png', 'Recycle'),
-                          _build3RMenu('Asset/Image/Tre.png', 'Upcycle'),
+                          _buildAesthetic3RMenu(
+                            'Asset/Image/Foodbox.png',
+                            'Refuse',
+                          ),
+                          _buildAesthetic3RMenu(
+                            'Asset/Image/Rec.png',
+                            'Recycle',
+                          ),
+                          _buildAesthetic3RMenu(
+                            'Asset/Image/Tre.png',
+                            'Upcycle',
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 30),
 
-                      // --- BANNER 2 ---
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.asset(
-                          'Asset/Image/Banner2.png',
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 25),
 
-                      // --- JUDUL UMKM TERLARIS ---
+                      // Banner 2
+                      _buildAestheticBanner('Asset/Image/Banner2.png'),
+
+                      const SizedBox(height: 35),
+
+                      // UMKM Terlaris
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -295,16 +333,19 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 'UMKM Terlaris',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w900,
                                   color: _primaryGreen,
                                 ),
                               ),
-                              const SizedBox(height: 2),
+                              const SizedBox(height: 4),
                               Container(
-                                height: 2,
-                                width: 95,
-                                color: _primaryGreen,
+                                height: 3,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: _primaryGreen,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
                               ),
                             ],
                           ),
@@ -313,29 +354,30 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 12,
                               color: _primaryGreen,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 15),
 
-                      // --- GRID MENU MAKANAN ---
+                      const SizedBox(height: 20),
+
+                      // Grid Menu Makanan (Desain Premium)
                       GridView.builder(
-                        padding: const EdgeInsets.only(bottom: 80),
+                        padding: EdgeInsets.zero,
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              crossAxisSpacing: 15,
-                              mainAxisSpacing: 15,
-                              childAspectRatio: 0.9,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                              childAspectRatio:
+                                  0.8, // Disesuaikan agar kartu lebih lega dan teks tidak terpotong
                             ),
                         itemCount: _foodItems.length,
                         itemBuilder: (context, index) {
-                          final item = _foodItems[index];
-                          return _buildFoodCard(item);
+                          return _buildAestheticFoodCard(_foodItems[index]);
                         },
                       ),
                     ],
@@ -345,33 +387,36 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // --- BOTTOM NAVIGATION BAR MENGAMBANG ---
+          // --- 3. BOTTOM NAVIGATION BAR MENGAMBANG KONSISTEN ALA IOS ---
           Positioned(
-            bottom: 20,
+            bottom: 30,
             left: 20,
             right: 20,
             child: Container(
-              height: 70,
+              height: 65,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(35),
-                border: Border.all(color: Colors.grey.shade300, width: 1),
+                borderRadius: BorderRadius.circular(40),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildBottomNavItem(Icons.home, 'Home', 0),
-                  _buildBottomNavItem(Icons.search, 'Search', 1),
+                  _buildBottomNavItem(
+                    Icons.home,
+                    'Home',
+                    0,
+                  ), // Index 0 (Home) Aktif
+                  _buildBottomNavItem(Icons.search_outlined, 'Search', 1),
                   _buildBottomNavItem(Icons.receipt_long, 'Pesanan', 2),
-                  _buildBottomNavItem(Icons.favorite, 'Favorite', 3),
-                  _buildBottomNavItem(Icons.person, 'Account', 4),
+                  _buildBottomNavItem(Icons.favorite_border, 'Favorite', 3),
+                  _buildBottomNavItem(Icons.person_outline, 'Account', 4),
                 ],
               ),
             ),
@@ -381,40 +426,54 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Menu 3R
-  Widget _build3RMenu(String imagePath, String title) {
+  // --- KUMPULAN WIDGET KUSTOM PREMIUM ---
+
+  // 1. Banner dengan Bayangan Halus
+  Widget _buildAestheticBanner(String imagePath) {
     return Container(
-      width: 95,
-      height: 125,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.asset(
+          imagePath,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  // 2. Menu 3R dengan Kotak Estetik
+  Widget _buildAesthetic3RMenu(String imagePath, String title) {
+    return Container(
+      width: 100,
+      padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.grey.shade200, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
+            color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFE5F2E6),
-              shape: BoxShape.circle,
-            ),
-            child: Image.asset(
-              imagePath,
-              width: 35,
-              height: 35,
-              fit: BoxFit.contain,
-            ),
-          ),
-          const SizedBox(height: 15),
+          Image.asset(imagePath, width: 45, height: 45, fit: BoxFit.contain),
+          const SizedBox(height: 12),
           Text(
             title,
             style: TextStyle(
@@ -428,10 +487,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Kartu Daftar Makanan (UMKM)
-  Widget _buildFoodCard(Map<String, dynamic> item) {
+  // 3. Kartu Makanan (Grid) Lebih Lega dan Rapih
+  Widget _buildAestheticFoodCard(Map<String, dynamic> item) {
     bool isNetworkImage = item['image'].toString().startsWith('http');
-
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -441,7 +499,7 @@ class _HomePageState extends State<HomePage> {
               restaurantName: item['name'],
               imagePath: item['image'],
               isNetworkImage: isNetworkImage,
-              menus: item['menus'], // Pastikan mengirim data menu ke MenuPage
+              menus: item['menus'],
             ),
           ),
         );
@@ -449,26 +507,26 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: Colors.grey.shade300, width: 1.5),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.grey.shade200, width: 1.5),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              blurRadius: 5,
-              offset: const Offset(0, 3),
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 15,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Gambar Makanan
+            // Gambar melengkung penuh di atas
             Expanded(
-              flex: 3,
+              flex: 4,
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(13),
-                  topRight: Radius.circular(13),
+                  topLeft: Radius.circular(18),
+                  topRight: Radius.circular(18),
                 ),
                 child: isNetworkImage
                     ? Image.network(
@@ -483,12 +541,12 @@ class _HomePageState extends State<HomePage> {
                       ),
               ),
             ),
-            // Detail Makanan
+            // Teks dan Info
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
+                  horizontal: 12.0,
                   vertical: 8.0,
                 ),
                 child: Column(
@@ -498,39 +556,50 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       item['name'],
                       style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 13,
                         color: Colors.black87,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 6),
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 12),
-                        const SizedBox(width: 2),
+                        const Icon(Icons.star, color: Colors.amber, size: 14),
+                        const SizedBox(width: 4),
                         Text(
                           item['rating'],
                           style: const TextStyle(
-                            fontSize: 9,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          item['reviews'],
+                          '(${item['reviews']})',
                           style: TextStyle(
-                            fontSize: 9,
-                            color: Colors.grey.shade600,
+                            fontSize: 10,
+                            color: Colors.grey.shade500,
                           ),
                         ),
-                        const Spacer(),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.grey.shade400,
+                          size: 12,
+                        ),
+                        const SizedBox(width: 4),
                         Text(
-                          '• ${item['distance']}',
+                          item['distance'],
                           style: TextStyle(
-                            fontSize: 9,
+                            fontSize: 10,
                             color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -545,13 +614,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // WIDGET KUSTOM: Bottom Navigation Item
+  // 4. Navigasi Bawah Konsisten Universal
   Widget _buildBottomNavItem(IconData icon, String label, int index) {
     bool isSelected = _selectedIndex == index;
     return GestureDetector(
       onTap: () {
         if (isSelected) return;
-
         Widget nextScreen;
         switch (index) {
           case 0:
@@ -559,7 +627,6 @@ class _HomePageState extends State<HomePage> {
           case 1:
             nextScreen = const SearchPage();
             break;
-            return; // Search
           case 2:
             nextScreen = const OrderPage();
             break;
@@ -572,7 +639,6 @@ class _HomePageState extends State<HomePage> {
           default:
             return;
         }
-
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
