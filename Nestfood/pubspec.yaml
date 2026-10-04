@@ -76,6 +76,11 @@ flutter:
     - Asset/Image/SeblakBiasa.png
     - Asset/Image/SeblakCeker.png
     - Asset/Image/SeblakSpesial.png
+    - Asset/Image/SateTaichan.png
+    - Asset/Image/SateKacang.png
+    - Asset/Image/Lontong.png
+    - Asset/Image/NasGorAyam.png
+    - Asset/Image/NasGorSeafood.png
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
